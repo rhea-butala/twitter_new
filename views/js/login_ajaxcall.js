@@ -114,7 +114,7 @@ function reset_password()
     $.ajax({
         type: "POST",
 
-        url: "http://localhost:3000" + "/resetpassword",
+        url: "http://localhost:4000" + "/resetpassword",
         data: reset_data,
         datatype: 'json'
 
@@ -153,7 +153,7 @@ function displaytweets(){
             
            // console.log("like no in displaytweets "+likeno1);
            
-           glow(data[index].tweet_id);
+          // glow(data[index].tweet_id);
             t = data[index].updated_at;
             tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
             console.log(data[index].media+ data[index].tweet_id);
@@ -177,12 +177,14 @@ function displaytweets(){
                 <footer>
                 <ul class="actions">
                  <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
-                 <li><button class="button large" onmouseleave="displaytweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+                 <li><button class="button large"  onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
 
             </ul>
                     <ul class="stats">
                         <li><a href="#"></a></li>
                         <li><div id="error"></div></li>
+                        <li><div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
+                        
                         <li><div id="likeno" class="countno">${data[index].likecount}</div></li>
                         <div id="error"></div>
                     </ul>
@@ -314,7 +316,7 @@ function globaltweets(){
         var tweet_time ="";
         $.each(data, function (index, value) {
 
-            glow(data[index].tweet_id);
+            //glow(data[index].tweet_id);
             t = data[index].updated_at;
             tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
          // t =  data[index].updated_at.split("T");
@@ -384,7 +386,9 @@ console.log("hihihi");
             console.log("data is in like"+data);
             if (data.length ==0)
        {
-        document.getElementById("error").innerHTML=` <div class="icon solid fa-heart" style="color:red"  onclick="likepost(${tweet_id})" onmouseleave="displaytweets()"></div>`;
+        //document.getElementById("error").innerHTML=` `;
+
+        likepost(tweet_id);
 
           
        }
@@ -549,7 +553,7 @@ function get() {
             // //console.log(datanew[0].Name);
             $('#getResponse').html(name);
             // window.location.href = `http://localhost:3000/home/${name}`;
-            window.location.href = `http://localhost:3000/home`;
+            window.location.href = `http://localhost:4000/home`;
 
 
             }

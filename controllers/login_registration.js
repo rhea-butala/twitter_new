@@ -201,7 +201,7 @@ class Login_registration {
                     to: email,         // List of recipients
                     subject: 'reset Password', // Subject line
                     text: 'Have the most fun you can in a car. Get your Tesla today!', 
-                    html:'<a href="http://localhost:3000/resetpassword/' + payload.id + '/' + token + '">Reset password</a>'// Plain text body
+                    html:'<a href="http://localhost:4000/resetpassword/' + payload.id + '/' + token + '">Reset password</a>'// Plain text body
                 };
                 transporter.sendMail(message, function(err, info) {
                     if (err) {

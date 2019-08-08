@@ -92,6 +92,6 @@ app.post('/home/delete_tweet', vlass.delete_tweet);
 //app.post('/home/likecountdisplay', vlass.likecountdisplay);
 //app.post('/home/likecountPost', vlass.likecountPost);
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 4000;
 app.listen(port,()=>console.log(`listening on port ${port}`));
 module.exports = app;
