@@ -1005,6 +1005,12 @@ console.log(post_data);
 
 }
 
+function logout()
+{
+    window.location.href = `http://localhost:4000/`;
+
+}
+
 
 
 
