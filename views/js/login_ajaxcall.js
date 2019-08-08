@@ -7,7 +7,7 @@ $(window).scroll(function() {
     if($(window).scrollTop() > 0) {
        
     } else {
-       displaytweets();
+        globaltweets();
     }
 });
 // window.addEventListener('scroll', function() {
@@ -154,11 +154,28 @@ function displaytweets(){
            // console.log("like no in displaytweets "+likeno1);
            
           // glow(data[index].tweet_id);
-            t = data[index].updated_at;
+            t = data[index].created_at;
             tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
-            console.log(data[index].media+ data[index].tweet_id);
+           // console.log(data[index].media+ data[index].tweet_id,data[index].media);
          // t =  data[index].updated_at.split("T");
+        
+            //retweetcheck(data[index].user_retweeted,data[index].updated_at);
+
+         
+
             html+=`
+            <article class="repost" id="repost">
+            <header>
+    <div class="title">
+        <h2><a href="single.html"></a></h2>
+        
+   <p></p>
+    </div>
+    <div class="meta">
+       
+        <a href="#" class="author"><span class="name">${data[index].user_retweeted}</span>
+        </div>
+</header>
             <article class="post">
                 <header>
                     <div class="title">
@@ -177,13 +194,93 @@ function displaytweets(){
                 <footer>
                 <ul class="actions">
                  <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
-                 <li><button class="button large"  onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
 
             </ul>
                     <ul class="stats">
                         <li><a href="#"></a></li>
                         <li><div id="error"></div></li>
                         <li><div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
+                        
+                        <li><div id="likeno" class="countno">${data[index].likecount}</div></li>
+                        <div id="error"></div>
+                    </ul>
+                </footer>
+            </article> </article>`;
+   // console.log(data[index].tweet_id);
+         t = ""; 
+         tweet_time ="";
+        });
+     
+        $('#post').html(html);
+      
+       
+    })
+    .fail(function(jqxhr,textStatus,err){
+        console.log('Ajax error',textStatus);
+    });
+}
+
+function retweetcheck(name, updated_at){
+    var html="";
+    html=``;
+$('#repost').html(html);
+
+}
+function displayretweets(){
+    var post_data={
+        userhandle:name
+    }
+    $.ajax({
+        type:"post",
+        url:window.location +"/displayretweets",
+        data : post_data,
+        
+        datatype:'json'
+
+    })
+    .done(function(data){
+        console.log("hiiii");
+        var html = "";
+        var t = "";
+        var tweet_time ="";
+        console.log(data);
+        $.each(data, function (index, value) {
+          //  likecountdisplay(data[index].tweet_id);
+            
+           // console.log("like no in displaytweets "+likeno1);
+           
+          // glow(data[index].tweet_id);
+            t = data[index].updated_at;
+            tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
+            console.log(data[index].media+ data[index].tweet_id);
+         // t =  data[index].updated_at.split("T");
+            html+=`
+            <article class="post">
+                <header>
+                    <div class="title">
+                        <h2><a href="single.html"></a></h2>
+                        ${data[index].post_text} 
+                   <p></p>
+                    </div>
+                    <div class="meta">
+                        <time class="published" datetime="2015-11-01">${tweet_time}</time>
+                        <a href="#" class="author"><span class="name">${data[index].userhandle}</span><img src="images/avatar.jpg" alt="" /></a>
+                        </div>
+                </header>
+                <a href="single.html" class="image featured"></a>
+                <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                <p></p>
+                <footer>
+                <ul class="actions">
+                 <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                 <li><button class="button large" onmouseleave="globaltweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+
+            </ul>
+                    <ul class="stats">
+                        <li><a href="#"></a></li>
+                        <li><div id="error"></div></li>
+                        <li><div class="icon solid fa-heart" style="color:red" onmouseleave="globaltweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
                         
                         <li><div id="likeno" class="countno">${data[index].likecount}</div></li>
                         <div id="error"></div>
@@ -204,7 +301,7 @@ function displaytweets(){
     });
 }
 function delete_tweet(tweet_id){
-    alert("Deleted");
+  //  alert("Deleted");
 console.log("sajhsgfui"+ tweet_id);
 
    var formdata ={
@@ -296,8 +393,6 @@ function bodyimage(){
 }
 
 function globaltweets(){
-    console.log(name);
-
     var post_data={
         userhandle:name
     }
@@ -310,22 +405,27 @@ function globaltweets(){
 
     })
     .done(function(data){
-        //console.log("done");
+        console.log("hiiii");
         var html = "";
         var t = "";
         var tweet_time ="";
+        console.log(data);
         $.each(data, function (index, value) {
-
-            //glow(data[index].tweet_id);
+          //  likecountdisplay(data[index].tweet_id);
+            
+           // console.log("like no in displaytweets "+likeno1);
+           
+          // glow(data[index].tweet_id);
             t = data[index].updated_at;
             tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
+            console.log(data[index].media+ data[index].tweet_id);
          // t =  data[index].updated_at.split("T");
             html+=`
             <article class="post">
                 <header>
                     <div class="title">
                         <h2><a href="single.html"></a></h2>
-                        ${data[index].post_text}
+                        ${data[index].post_text} 
                    <p></p>
                     </div>
                     <div class="meta">
@@ -337,13 +437,18 @@ function globaltweets(){
                 <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
                 <p></p>
                 <footer>
-                    <ul class="actions">
-                        <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
-                    </ul>
+                <ul class="actions">
+                 <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                 <li><button class="button large" onmouseleave="displayretweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+
+            </ul>
                     <ul class="stats">
                         <li><a href="#"></a></li>
-                        <li><div id="button"><?div></li>
-                        <li><button class="icon solid fa-comment">${likeno}128</button></li>
+                        <li><div id="error"></div></li>
+                        <li><div class="icon solid fa-heart" style="color:red" onmouseleave="displayretweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
+                        
+                        <li><div id="likeno" class="countno">${data[index].likecount}</div></li>
+                        <div id="error"></div>
                     </ul>
                 </footer>
             </article>`;

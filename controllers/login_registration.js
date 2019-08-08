@@ -400,10 +400,16 @@ console.log("retweet class");
              
                  }
                  var idname;
+
+
+        
+
+
+       // connection.query('Insert into tweets set ?', [tweet])
                 // connection.query('select * from retweet where tweet_id=? and user_id = (select user_id from user where user_handle =?)',[tweet_id,user_handle],function(err,data){
                    // response.send(data);
         
-                  connection.query('insert into retweet (tweet_id,user_id) values (? ,(select user_id from user where user_handle = ?))',[tweet_id,user_handle],function(err,data){
+                  connection.query(`insert into retweet (tweet_id,user_id) values (? ,(select user_id from user where user_handle = ?)); INSERT INTO tweets (post_text, hashtag, media, userhandle, user_retweeted) SELECT post_text, hashtag, media, userhandle, '${user_handle}' FROM tweets WHERE tweet_id=?;`,[tweet_id,user_handle,tweet_id],function(err,data){
                       if(err)
                       {throw err;}
                       else
@@ -448,9 +454,20 @@ console.log("retweet class");
       }
     displaytweets(request, response) {
         var userhandle = request.body.userhandle;
-        connection.query('select * from tweets where userhandle = ?  order by updated_at desc', [userhandle], function (err, data) {
+        connection.query('select * from tweets where userhandle = ? or user_retweeted =? order by updated_at desc', [userhandle,userhandle], function (err, data) {
             response.send(data);
             console.log(data[0].updated_at);
+            if (err) {
+                response.send("error");
+            }
+        });
+    }
+    displayretweets(request, response) {
+        var userhandle = request.body.userhandle;
+        console.log("hi");
+        connection.query('select distinct t.tweet_id,post_text,media,userhandle,likecount,updated_at from tweets t , retweet r where t.userhandle=? or (t.tweet_id = r.tweet_id and r.user_id=(select user_id from user where user_handle= ?)) order by updated_at desc;  ', [userhandle,userhandle], function (err, data) {
+            response.send(data);
+            console.log(JSON.stringify("retweet"+data));
             if (err) {
                 response.send("error");
             }
@@ -482,7 +499,7 @@ console.log("retweet class");
         console.log("hi global tweet");
         var userhandle = request.body.userhandle;
         console.log("userhandle"+userhandle);
-        connection.query('select * from tweet where userhandle ="sonali" ', [userhandle, userhandle], function (err, data) {
+        connection.query(' select  t.tweet_id,t.post_text,t.hashtag,t.media,t.userhandle,t.updated_at,t.likecount,t.created_at,t.user_retweeted from user_follower uf inner join user u on uf.follower_id = u.user_id inner join tweets t on t.userhandle = u.user_handle  where uf.user_id=(select user_id from user where user_handle=?) group by t.tweet_id order by t.updated_at desc;', [userhandle], function (err, data) {
             response.send(data);
             console.log(JSON.stringify(data));
            // console.log(data[0].updated_at);
