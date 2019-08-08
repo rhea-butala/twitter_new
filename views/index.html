@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+
+<html>
+	<head>
+		<title>Twitter</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	</head>
+	<body class="is-preload" onload="bodyimage()">
+		<div id="scroll-top"></div>
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header">
+						
+						
+							<ul>
+								
+							</ul>
+						</nav>
+						<nav class="main">
+							<ul>
+								<li class="search">
+									
+								</li>
+								<li class="menu">
+									<a class="fa-bars" href="#menu">Menu</a>
+								</li>
+							</ul>
+						</nav>
+					</header>
+
+				<!-- Menu -->
+					<section id="menu" onmouseleave="clear_disp()">
+
+						<!-- Search -->
+						<section>
+							<form class="search" method="get" action="#">
+								<input type="text" name="query" placeholder="Search"  class="searchname" id="searchname"/>
+							</form>
+							<button class="button button4" onclick="searchglobal()">Search</button>
+
+						</section>
+						<div id = "dispsearch"></div>
+						<div id = "dispsearch1"></div>
+
+						<div id = "dispsearchHash"></div>
+						<!-- Links -->
+						
+						<!-- Actions -->
+							<section>
+								<ul class="actions stacked">
+									<li><a href="#" class="button large fit">Log Out</a></li>
+								</ul>
+							</section>
+
+					</section>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+						<div id="post" class="post" ></div>
+							<article class="post">
+								<header>
+									<div class="title">
+										<h2><a href="single.html"></a></h2>
+										<p></p>
+									</div>
+									<div class="meta">
+										<time class="published" datetime="2015-11-01">Date, 2015</time>
+										<a href="#" class="author"><span class="name">Name surname</span><img src="images/avatar.jpg" alt="" /></a>
+									</div>
+								</header>
+								<a href="single.html" class="image featured"><img src="images/pic01.jpg" alt="" /></a>
+								<p></p>
+								<footer>
+									<ul class="actions">
+										<li><a href="single.html" class="button large">Retweet</a></li>
+									</ul>
+									<ul class="stats">
+										<li><a href="#"></a></li>
+										<li><a href="#" class="icon solid fa-heart">28</a></li>
+										<li><a href="#" class="icon solid fa-comment">128</a></li>
+									</ul>
+								</footer>
+							</article>
+
+						<!-- Post -->
+						
+		
+							
+
+					</div>
+
+				<!-- Sidebar -->
+					<section id="sidebar">
+
+						<!-- Intro -->
+							<section id="intro">
+								<a href="#" class="logo"><img src="images/logo.jpg" alt="" /></a>
+								<header>
+									<h2>Twitter</h2>
+									
+									<center>
+											<div class="row">
+													
+													<div class="small-12 medium-2 large-2 columns">
+													 
+														<!-- User Profile Image -->
+														<img class="profile-pic img1" src="images/logo.jpg" id="profile_image" alt="Enter your profile image"> 
+												 
+														<!-- Default Image -->
+														<!-- <i class="fa fa-user fa-5x"></i> -->
+													  
+													  <div class="p-image" >
+														<i class="fa fa-camera upload-button" ></i>
+													  </div>
+												   </div>
+												   <input class="file-upload" type="file" id="media1" name="media1" onclick="editprofile()" accept="image/*"/>
+
+												 </div>
+										<!-- <i class="fa fa-user-circle-o usericon" style="font-size:48px;color:black"></i> -->
+									<div class="username" id="namedisp"></div>
+									<!-- <div class="userhandle">@User Handle</div></center> -->
+									<div class="follow" id="follow"></div>
+									
+										
+								</header>
+								
+
+									  
+								
+							</section>
+							
+							<center>
+									<button type="button" class="button button4" onclick="globaltweets()">
+											Home
+										  </button>
+										<button type="button" class="button button4" onclick="displaytweets()" >
+												YourTweet
+											  </button><br>
+											<div class="buttontweet"><button type="button" class=" button button4" id="postbutton" onclick="tweetfunction()">
+												Tweet
+											  </button></div>
+											  <br>
+											  <div class="postid" id="postid" style="visibility:hidden"><section>
+												<textarea type="text" name="post_text" id="post_text"></textarea>
+									<label>Enter Your post</label><br><br>
+									
+									
+									<input type="file"  accept="video/*|image/*" name="media" class="media" id="media" onchange="imagechange()">
+									
+									<button type="button" class="button button4" data-dismiss="modal" onclick = "post_tweet()">Post</button>
+								</section></div></center>
+		
+					
+								
+								<script>
+								</script>
+					
+<!-- modal -->
+
+		
+		<!-- Button to Open the Modal -->
+		
+	  
+		<!-- The Modal -->
+		<div class="container"></div>
+		<div class="modal" id="myModal">
+		  <div class="modal-dialog">
+			<div class="modal-content">
+			
+			  <!-- Modal Header -->
+			  <div class="modal-header">
+				<h6 class="modal-title">Enter your tweets</h6>
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+			  </div>
+			  
+			  <!-- Modal body -->
+			  <div class="modal-body">
+				
+			  </div>
+			  <!-- Modal footer -->
+			  <div class="modal-footer">
+			  </div>
+			  
+			</div>
+		  </div>
+		</div>
+		
+	  </div>
+	  
+					
+						
+					</section>
+
+			</div>
+
+
+<script src="js/login_ajaxcall.js"></script>
+			
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="js/editprofile.js"></script>
+
+
+	</body>
+</html>

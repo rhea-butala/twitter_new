@@ -1,0 +1,70 @@
+
+  <!--  <body>
+        
+        <form > 
+            <br>
+            <br>
+            <input type="email" name="email" id="email">
+            <br>
+        </form>
+        <input type="submit" value="submit" onclick="emailforgotpass()">
+   
+        <div id="displayemail"></div>
+
+        <script src="js/login_ajaxcall.js"></script>
+    </body>
+</html>-->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script
+  src="https://code.jquery.com/jquery-1.12.4.js"
+  integrity="sha256-Qw82+bXyGq6MydymqBxNPYTaUXXq7c8v3CwiYwLLNXU="
+  crossorigin="anonymous"></script>
+    <title>Forgot Password</title>
+</head>
+<link rel="stylesheet" type="text/css" href="/css/forgot_pass.css">
+<body>
+    <div class="header">
+        <h1>Twitter</h1>
+        
+    </div>
+    <form  id="loginform"  name="main_form">
+        <h4>Forgot Password</h4>
+                 
+            
+                 <div><label for="Email">Email</label></div>
+                 <input type="email" name="email" id="email" required=""> 
+       
+               
+                
+                
+        
+       <br> <!--<input   class="button" type="submit" value="Login" name="submit" onclick="get()" id="getButton">-->
+       
+       
+       <p id="getemail"> </p>
+      </form>	
+    <center> <button  type="submit" id="getButton" class="button" onclick="emailforgotpass()">SUBMIT</button></center> 
+      
+      
+    <div class="signup">
+            <p> <a href="/"> Login </a></p><br>
+           
+          </div>
+      <!-- <script type="text/javascript" src="js/registration.js"></script>-->
+      <script src="js/login_ajaxcall.js">
+      
+    </script>
+    </body>
+</html>
