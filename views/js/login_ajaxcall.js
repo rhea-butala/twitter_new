@@ -3,6 +3,9 @@ var formdata = {};
 var name;
 var idval;
 var txt;
+var following_no;
+
+var followers_no;
 $(window).scroll(function() {
     if($(window).scrollTop() > 0) {
        
@@ -14,6 +17,9 @@ $(window).scroll(function() {
 //     displaytweets();
 //     //document.getElementById('showScroll').innerHTML = pageYOffset + 'px';
 //   });
+
+
+
 document.getElementById("dispsearch").style.visibility = "hidden";
 
 document.getElementById("dispsearch1").style.visibility = "hidden";
@@ -30,22 +36,28 @@ function imagechange() {
         if ('name' in file) {
             txt = file.name;
         }
+        else{
+    txt = "logo.jpg";
+
+        }
 
     }
-    console.log(txt);
+    
+            console.log("txt out"+txt);
+    //console.log(txt);
 }
-console.log(idval);
-
+//console.log(idval);
 function display() {
+    //console.log(following_no +" "+ followers_no);
+    ////console.log(following+"following outside");
 
     document.getElementById("namedisp").innerHTML = `@${name}`;
-    document.getElementById("follow").innerHTML=`<a href="#" class="icon solid fa-users followers">followers</a>
-    <a href="#" class="icon solid fa-users following">following</a>`;
+   
    var senddata={
        name:name
 
     }
-  //  console.log(senddata);
+  //  //console.log(senddata);
     
     $.ajax({
         type: "POST",
@@ -56,24 +68,24 @@ function display() {
 
     })
         .done(function (data) {
-            console.log(data);
-           console.log("data is follow"+data);
+            //console.log(data);
+           //console.log("data is follow"+data);
 
         })
         .fail(function (jqxhr, textStatus, err) {
-           console.log('Ajax error',textStatus);
+           //console.log('Ajax error',textStatus);
         });
 };
 var imageonload;
 var imageurl;
 function emailforgotpass()
 
-{    console.log("i m in ajax email");
+{    //console.log("i m in ajax email");
     var email = $('#email').val();
     const send_email={
         email
     }
-    console.log(send_email);
+    //console.log(send_email);
     $.ajax({
         type: "POST",
 
@@ -83,13 +95,13 @@ function emailforgotpass()
 
     })
         .done(function (data) {
-            console.log(data);
+            //console.log(data);
            
           $("#getemail").html(JSON.stringify(data));
           reset_val();
         })
         .fail(function (jqxhr, textStatus, err) {
-           console.log('Ajax error',textStatus);
+           //console.log('Ajax error',textStatus);
         });
 
 
@@ -114,18 +126,18 @@ function reset_password()
     $.ajax({
         type: "POST",
 
-        url: "http://localhost:4000" + "/resetpassword",
+        url: "http://localhost:7000" + "/resetpassword",
         data: reset_data,
         datatype: 'json'
 
     })
         .done(function (data) {
-            console.log(data);
+            //console.log(data);
            
          // $("#displayemail").html(JSON.stringify(data));
         })
         .fail(function (jqxhr, textStatus, err) {
-           console.log('Ajax error',textStatus);
+           //console.log('Ajax error',textStatus);
         });
 
 
@@ -146,54 +158,154 @@ function displaytweets(){
     })
     .done(function(data){
         var html = "";
+        var htmlimage="";
+
         var t = "";
         var tweet_time ="";
         $.each(data, function (index, value) {
           //  likecountdisplay(data[index].tweet_id);
             
-           // console.log("like no in displaytweets "+likeno1);
+           // //console.log("like no in displaytweets "+likeno1);
            
           // glow(data[index].tweet_id);
             t = data[index].created_at;
             tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
-           // console.log(data[index].media+ data[index].tweet_id,data[index].media);
+           // //console.log(data[index].media+ data[index].tweet_id,data[index].media);
          // t =  data[index].updated_at.split("T");
         
             //retweetcheck(data[index].user_retweeted,data[index].updated_at);
 
          
 
-            html+=`
-            <article class="repost" id="repost">
-            <header>
-    <div class="title">
-        <h2><a href="single.html"></a></h2>
-        
-   <p></p>
-    </div>
-    <div class="meta">
-       
-        <a href="#" class="author"><span class="name">${data[index].user_retweeted}</span>
-        </div>
-</header>
-            <article class="post">
-                <header>
+            html+=``
+        if(data[index].user_retweeted){
+            html+=`<article class="post"><header>
+                
+            <div class="title">
+                <h2><a href="single.html"></a></h2>
+                ${data[index].post_text}
+           <p></p>
+            </div>
+            <div class="meta">
+            Reposted: @${data[index].user_retweeted} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
+                <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time>
+               
+        </header>
+        <header>
+                
                     <div class="title">
                         <h2><a href="single.html"></a></h2>
                         ${data[index].post_text}
                    <p></p>
                     </div>
                     <div class="meta">
-                        <time class="published" datetime="2015-11-01">${tweet_time}</time>
-                        <a href="#" class="author"><span class="name">${data[index].userhandle}</span><img src="images/avatar.jpg" alt="" /></a>
-                        </div>
+                    
+                        
+                       Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
+                       <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
                 </header>
-                <a href="single.html" class="image featured"></a>
+                `
+                if(data[index].media!='home/profile_image/undefined'){
+                html+=
+                `
+        <a href="single.html" class="image featured"></a>
                 <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
                 <p></p>
                 <footer>
                 <ul class="actions">
-                 <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+
+            </ul>
+                    <ul class="stats">
+                        <li><a href="#"></a></li>
+                        <li><div id="error"></div></li></ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
+                        <div id="error"></div>
+                    
+                </footer></article>
+        
+        `
+                }
+                else{
+                    html+=`
+                    
+                    <a href="single.html" class="image featured"></a>
+                
+                <p></p>
+                <footer>
+                <ul class="actions">
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+
+            </ul>
+                    <ul class="stats">
+                        <li><a href="#"></a></li>
+                        <li><div id="error"></div></li>
+                        </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
+                        <div id="error"></div>
+                  
+                </footer></article>`;
+                }
+        }
+        else{
+            html+=
+           
+            `<article class="post">
+           
+                <header>
+                
+                    <div class="title">
+                        <h2><a href="single.html"></a></h2>
+                        ${data[index].post_text}
+                   <p></p>
+                    </div>
+                    <div class="meta">
+                    
+                        
+                       Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
+                       <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
+                </header>
+               
+            `;
+            if(data[index].media!='home/profile_image/undefined'){
+
+
+                html+=` <a href="single.html" class="image featured"></a>
+                <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                <p></p>
+                <footer>
+                <ul class="actions">
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+
+            </ul>
+                    <ul class="stats">
+                        <li><a href="#"></a></li>
+                        <li><div id="error"></div></li>
+                        </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
+                        <div id="error"></div>
+                </footer></article>`;
+                console.log(data[index].tweet_id);
+
+
+            }
+            else{
+                html+=`
+                <a href="single.html" class="image featured"></a>
+                
+                <p></p>
+                <footer>
+                <ul class="actions">
+                 <li><button class="button large" onmouseleave="displaytweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
                  <li><button class="button large" onmouseleave="displaytweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
 
             </ul>
@@ -202,12 +314,15 @@ function displaytweets(){
                         <li><div id="error"></div></li>
                         <li><div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
                         
-                        <li><div id="likeno" class="countno">${data[index].likecount}</div></li>
+                        </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
                         <div id="error"></div>
-                    </ul>
-                </footer>
-            </article> </article>`;
-   // console.log(data[index].tweet_id);
+                </footer></article>`;
+            }
+        }
+   // //console.log(data[index].tweet_id);
          t = ""; 
          tweet_time ="";
         });
@@ -217,7 +332,7 @@ function displaytweets(){
        
     })
     .fail(function(jqxhr,textStatus,err){
-        console.log('Ajax error',textStatus);
+        //console.log('Ajax error',textStatus);
     });
 }
 
@@ -240,20 +355,20 @@ function displayretweets(){
 
     })
     .done(function(data){
-        console.log("hiiii");
+        //console.log("hiiii");
         var html = "";
         var t = "";
         var tweet_time ="";
-        console.log(data);
+        //console.log(data);
         $.each(data, function (index, value) {
           //  likecountdisplay(data[index].tweet_id);
             
-           // console.log("like no in displaytweets "+likeno1);
+           // //console.log("like no in displaytweets "+likeno1);
            
           // glow(data[index].tweet_id);
             t = data[index].updated_at;
             tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
-            console.log(data[index].media+ data[index].tweet_id);
+            //console.log(data[index].media+ data[index].tweet_id);
          // t =  data[index].updated_at.split("T");
             html+=`
             <article class="post">
@@ -265,7 +380,7 @@ function displayretweets(){
                     </div>
                     <div class="meta">
                         <time class="published" datetime="2015-11-01">${tweet_time}</time>
-                        <a href="#" class="author"><span class="name">${data[index].userhandle}</span><img src="images/avatar.jpg" alt="" /></a>
+                        <a href="#" class="author"><span class="name">${data[index].userhandle}</span><img class="Profile_post_img" src="images/avatar.jpg" alt="" /></a>
                         </div>
                 </header>
                 <a href="single.html" class="image featured"></a>
@@ -273,7 +388,7 @@ function displayretweets(){
                 <p></p>
                 <footer>
                 <ul class="actions">
-                 <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                 <li><button class="button large" onmouseleave="globaltweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
                  <li><button class="button large" onmouseleave="globaltweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
 
             </ul>
@@ -282,12 +397,14 @@ function displayretweets(){
                         <li><div id="error"></div></li>
                         <li><div class="icon solid fa-heart" style="color:red" onmouseleave="globaltweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
                         
-                        <li><div id="likeno" class="countno">${data[index].likecount}</div></li>
+                        </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
                         <div id="error"></div>
-                    </ul>
                 </footer>
             </article>`;
-   // console.log(data[index].tweet_id);
+   // //console.log(data[index].tweet_id);
          t = ""; 
          tweet_time ="";
         });
@@ -297,17 +414,17 @@ function displayretweets(){
        
     })
     .fail(function(jqxhr,textStatus,err){
-        console.log('Ajax error',textStatus);
+        //console.log('Ajax error',textStatus);
     });
 }
 function delete_tweet(tweet_id){
   //  alert("Deleted");
-console.log("sajhsgfui"+ tweet_id);
+//console.log("sajhsgfui"+ tweet_id);
 
    var formdata ={
     tweet_id:tweet_id
     }
-    console.log(formdata);
+    //console.log(formdata);
     $.ajax({
         type: "POST",
 
@@ -319,12 +436,12 @@ console.log("sajhsgfui"+ tweet_id);
         .done(function (data) {
            
 
-            console.log("success");
+            //console.log("success");
         
 
         })
         .fail(function (jqxhr, textStatus, err) {
-            //console.log('Ajax error',textStatus);
+            ////console.log('Ajax error',textStatus);
         });
 
 
@@ -345,7 +462,7 @@ console.log("sajhsgfui"+ tweet_id);
 //     })
 //         .done(function (data) {
 //            likeno = data.length;
-//            console.log("like no is "+likeno);
+//            //console.log("like no is "+likeno);
 // //likecountPost(tweet_id,likeno)
 
 //            //return likeno;
@@ -353,9 +470,9 @@ console.log("sajhsgfui"+ tweet_id);
 
 //         })
 //         .fail(function (jqxhr, textStatus, err) {
-//            console.log('Ajax error',textStatus);
+//            //console.log('Ajax error',textStatus);
 //         });
-//       //  console.log("outside "+likeno);
+//       //  //console.log("outside "+likeno);
 
 
 
@@ -382,9 +499,9 @@ console.log("sajhsgfui"+ tweet_id);
 
 //         })
 //         .fail(function (jqxhr, textStatus, err) {
-//            console.log('Ajax error',textStatus);
+//            //console.log('Ajax error',textStatus);
 //         });
-//       //  console.log("outside "+likeno);
+//       //  //console.log("outside "+likeno);
 
 
 // }
@@ -405,54 +522,164 @@ function globaltweets(){
 
     })
     .done(function(data){
-        console.log("hiiii");
+        //console.log("hiiii");
         var html = "";
         var t = "";
         var tweet_time ="";
-        console.log(data);
+        //console.log(data);
         $.each(data, function (index, value) {
           //  likecountdisplay(data[index].tweet_id);
             
-           // console.log("like no in displaytweets "+likeno1);
+           // //console.log("like no in displaytweets "+likeno1);
            
           // glow(data[index].tweet_id);
             t = data[index].updated_at;
             tweet_time = t.toLocaleString('en-US',{timeZone : "Asia/Kolkata"});
-            console.log(data[index].media+ data[index].tweet_id);
+            //console.log(data[index].media+ data[index].tweet_id);
          // t =  data[index].updated_at.split("T");
-            html+=`
-            <article class="post">
-                <header>
-                    <div class="title">
-                        <h2><a href="single.html"></a></h2>
-                        ${data[index].post_text} 
-                   <p></p>
-                    </div>
-                    <div class="meta">
-                        <time class="published" datetime="2015-11-01">${tweet_time}</time>
-                        <a href="#" class="author"><span class="name">${data[index].userhandle}</span><img src="images/avatar.jpg" alt="" /></a>
-                        </div>
-                </header>
-                <a href="single.html" class="image featured"></a>
-                <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
-                <p></p>
-                <footer>
-                <ul class="actions">
-                 <li><button class="button large" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
-                 <li><button class="button large" onmouseleave="displayretweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
-
-            </ul>
-                    <ul class="stats">
-                        <li><a href="#"></a></li>
-                        <li><div id="error"></div></li>
-                        <li><div class="icon solid fa-heart" style="color:red" onmouseleave="displayretweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
-                        
-                        <li><div id="likeno" class="countno">${data[index].likecount}</div></li>
+         html+=``
+         if(data[index].user_retweeted){
+             html+=`<article class="post"><header>
+                 
+             <div class="title">
+                 <h2><a href="single.html"></a></h2>
+                 ${data[index].post_text}
+            <p></p>
+             </div>
+             <div class="meta">
+             Reposted: @${data[index].user_retweeted} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
+                 <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time>
+                
+         </header>
+         <header>
+                 
+                     <div class="title">
+                         <h2><a href="single.html"></a></h2>
+                         ${data[index].post_text}
+                    <p></p>
+                     </div>
+                     <div class="meta">
+                     
+                         
+                        Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
+                        <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
+                 </header>
+                 `
+                 if(data[index].media!='home/profile_image/undefined'){
+                 html+=
+                 `
+         <a href="single.html" class="image featured"></a>
+                 <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                 <p></p>
+                 <footer>
+                 <ul class="actions">
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+ 
+             </ul>
+                     <ul class="stats">
+                         <li><a href="#"></a></li>
+                         <li><div id="error"></div></li>
+                         </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
                         <div id="error"></div>
-                    </ul>
-                </footer>
-            </article>`;
-   // console.log(data[index].tweet_id);
+                 </footer></article>
+         
+         `
+                 }
+                 else{
+                     html+=`
+                     
+                     <a href="single.html" class="image featured"></a>
+                 
+                 <p></p>
+                 <footer>
+                 <ul class="actions">
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+ 
+             </ul>
+                     <ul class="stats">
+                         <li><a href="#"></a></li>
+                         <li><div id="error"></div></li>
+                         </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
+                        <div id="error"></div>
+                 </footer></article>`;
+                 }
+         }
+         else{
+             html+=
+            
+             `<article class="post">
+            
+                 <header>
+                 
+                     <div class="title">
+                         <h2><a href="single.html"></a></h2>
+                         ${data[index].post_text}
+                    <p></p>
+                     </div>
+                     <div class="meta">
+                     
+                         
+                        Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
+                        <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
+                 </header>
+                
+             `;
+             if(data[index].media!='home/profile_image/undefined'){
+ 
+ 
+                 html+=` <a href="single.html" class="image featured"></a>
+                 <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                 <p></p>
+                 <footer>
+                 <ul class="actions">
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+ 
+             </ul>
+                     <ul class="stats">
+                         <li><a href="#"></a></li>
+                         <li><div id="error"></div></li>
+                         </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
+                        <div id="error"></div>
+                 </footer></article>`;
+                 console.log(data[index].tweet_id);
+ 
+ 
+             }
+             else{
+                 html+=`
+                 <a href="single.html" class="image featured"></a>
+                 
+                 <p></p>
+                 <footer>
+                 <ul class="actions">
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="retweet(${data[index].tweet_id})">Retweet</button></li>
+                  <li><button class="button large" onmouseleave="globaltweets()" onclick="delete_tweet(${data[index].tweet_id})">Delete</button></li>
+ 
+             </ul>
+                     <ul class="stats">
+                         <li><a href="#"></a></li>
+                         <li><div id="error"></div></li>
+                         </ul>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        &nbsp;&nbsp;&nbsp;
+                        <div id="likeno" class="countno">${data[index].likecount}</div>
+                        <div id="error"></div>
+                 </footer></article>`;
+             }
+         }
+   // //console.log(data[index].tweet_id);
          t = ""; 
          tweet_time ="";
         });
@@ -462,22 +689,22 @@ function globaltweets(){
        
     })
     .fail(function(jqxhr,textStatus,err){
-        console.log('Ajax error',textStatus);
+        //console.log('Ajax error',textStatus);
     });
 }
 function glow(tweet_id) {
-console.log("hihihi");
+//console.log("hihihi");
     var likecount=1;
     //var name =name;
    // alert("hi");
-   // console.log("tweet_id is"+likecount);
+   // //console.log("tweet_id is"+likecount);
     senddata = {
         tweet_id:tweet_id,
        name:name
     }
-    console.log("formdata is"+JSON.stringify( senddata));
+    //console.log("formdata is"+JSON.stringify( senddata));
 
-    // //console.log(formdata.user_handle);
+    // ////console.log(formdata.user_handle);
     $.ajax({
         type: "POST",
 
@@ -488,7 +715,7 @@ console.log("hihihi");
     })
         .done(function (data) {
 
-            console.log("data is in like"+data);
+            //console.log("data is in like"+data);
             if (data.length ==0)
        {
         //document.getElementById("error").innerHTML=` `;
@@ -503,7 +730,7 @@ console.log("hihihi");
        }
         })
         .fail(function (jqxhr, textStatus, err) {
-           console.log('Ajax error',textStatus);
+           //console.log('Ajax error',textStatus);
         });
 
 
@@ -513,14 +740,14 @@ function likepost(tweet_id) {
     var likecount=1;
     //var name =name;
    // alert("");
-    console.log("tweet_id is"+likecount);
+    //console.log("tweet_id is"+likecount);
     senddata = {
         tweet_id:tweet_id,
        name:name
     }
-    console.log("formdata is"+JSON.stringify( senddata));
+    //console.log("formdata is"+JSON.stringify( senddata));
 
-    // //console.log(formdata.user_handle);
+    // ////console.log(formdata.user_handle);
     $.ajax({
         type: "POST",
 
@@ -535,7 +762,7 @@ function likepost(tweet_id) {
 
         })
         .fail(function (jqxhr, textStatus, err) {
-           console.log('Ajax error',textStatus);
+           //console.log('Ajax error',textStatus);
         });
 
 
@@ -545,10 +772,68 @@ function bodyimage() {
 
 
 }
+function following(name){
+   var post_data={
+       name:name
+
+   }
+   //console.log("name is"+name);
+    $.ajax({
+        type: "POST",
+
+        url: window.location + "/following",
+        data: post_data,
+        datatype: 'json'
+
+    })
+        .done(function (data) {
+            following_no =data.length;
+            //console.log("following data is"+following_no);
+            document.getElementById("follow").innerHTML=`<a href="#" class="icon solid fa-users followers">followers ${followers_no}</a>
+            <a href="#" class="icon solid fa-users following">following ${following_no}</a>`;
+
+
+        })
+        .fail(function (jqxhr, textStatus, err) {
+            //console.log('Ajax error', textStatus);
+        });
+
+
+}
+
+function followers(name){
+    var post_data={
+        name:name
+ 
+    }
+    //console.log("name is in followers"+name);
+     $.ajax({
+         type: "POST",
+ 
+         url: window.location + "/followers",
+         data: post_data,
+         datatype: 'json'
+ 
+     })
+         .done(function (data) {
+             followers_no =data.length;
+             //console.log("follower data is"+followers_no);
+             document.getElementById("follow").innerHTML=`<a href="#" class="icon solid fa-users followers">followers ${followers_no}</a>
+             <a href="#" class="icon solid fa-users following">following ${following_no}</a>`;
+ 
+ 
+         })
+         .fail(function (jqxhr, textStatus, err) {
+             //console.log('Ajax error', textStatus);
+         });
+ 
+ 
+ }
 //localStorage.setItem("vOneLocalStorage", imageurl);
-$(document).ready(function () {
-
-
+function mainfunc() {
+following(name);
+followers(name);
+display();
 
     var post_data = {
         user_handle: name
@@ -567,32 +852,39 @@ $(document).ready(function () {
         .done(function (data) {
             imageonload = data[0].profile_image;
 
-            console.log(imageonload);
+            //console.log(imageonload);
             var image = document.getElementById('profile_image');
+            if(imageonload){
+                console.log("img exist");
             image.src = imageonload;
-            console.log();
-            console.log("data is" + data[0].profile_image);
+
+            }
+            else{
+                image.src='home/profile_image/default_profile.jpeg';
+            }
+            //console.log();
+            //console.log("data is" + data[0].profile_image);
 
 
         })
         .fail(function (jqxhr, textStatus, err) {
-            console.log('Ajax error', textStatus);
+            //console.log('Ajax error', textStatus);
         });
 
-    //console.log("it is"+JSON.stringify(imageonload));
+    ////console.log("it is"+JSON.stringify(imageonload));
     var readURL = function (input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function (e) {
-                console.log("it is" + imageonload);
+                //console.log("it is" + imageonload);
                 $('.profile-pic').attr('src', e.target.result);
 
             }
 
             reader.readAsDataURL(input.files[0]);
             imageurl = input.files[0].name;
-            console.log(imageurl);
+            //console.log(imageurl);
             editprofile();
         }
         else {
@@ -602,16 +894,16 @@ $(document).ready(function () {
 
 
     $(".file-upload").on('change', function () {
-        //  console.log("it is"+imageonload);
+        //  //console.log("it is"+imageonload);
 
         readURL(this);
-        ////console.log(this);
+        //////console.log(this);
     });
 
     $(".upload-button").on('click', function () {
         $(".file-upload").click();
     });
-});
+}
 function get() {
     formdata = {
         user_handle: $("#Userhandle").val(),
@@ -627,7 +919,7 @@ function get() {
     }
     else{
 
-    // //console.log(formdata.user_handle);
+    // ////console.log(formdata.user_handle);
     $.ajax({
         type: "POST",
 
@@ -641,7 +933,7 @@ function get() {
 
             // name = data[0].Name;
             // idval = data[0].user_id;
-            // console.log(data);
+            // //console.log(data);
 
             if (data == '')
             {
@@ -655,10 +947,10 @@ function get() {
             {
                 name = data[0].Name;
                 idval = data[0].user_id;
-            // //console.log(datanew[0].Name);
+            // ////console.log(datanew[0].Name);
             $('#getResponse').html(name);
             // window.location.href = `http://localhost:3000/home/${name}`;
-            window.location.href = `http://localhost:4000/home`;
+            window.location.href = `http://localhost:7000/home`;
 
 
             }
@@ -666,7 +958,7 @@ function get() {
 
         })
         .fail(function (jqxhr, textStatus, err) {
-            //console.log('Ajax error',textStatus);
+            ////console.log('Ajax error',textStatus);
         });
     }
 }
@@ -681,7 +973,7 @@ function editprofileget() {
 
 function clear_disp() {
     $('#searchname').val("");
-    $('#dispsearch').html("");
+   $('#dispsearch').html("");
     $('#dispsearchHash').html("");
     $('#dispsearch1').html("");
 }
@@ -690,15 +982,15 @@ function clear_disp() {
 
 
 function editprofile() {
-    //console.log("hi");
+    ////console.log("hi");
     //var name1="hi";
     // var name=document.getElementById("namedisp").value;  
     // var image = document.getElementById("profile_image").src;
 
     // var image= vOneLS;
-    //console.log("url is"+imageurl);
+    ////console.log("url is"+imageurl);
     var path = "home/profile_image/";
-    // //console.log(imageurl);
+    // ////console.log(imageurl);
     var post_data = {
         user_handle: name,
         profile_image: path + imageurl
@@ -707,8 +999,8 @@ function editprofile() {
         // userhandle : name
 
     }
-    //console.log(post_data);
-    // //console.log(post_data);
+    ////console.log(post_data);
+    // ////console.log(post_data);
     $.ajax({
         type: "POST",
 
@@ -718,7 +1010,7 @@ function editprofile() {
 
     })
         .done(function (data) {
-            //console.log("data is"+data);
+            ////console.log("data is"+data);
 
 
             // $('#result').html("invalid user_handle and password");
@@ -734,13 +1026,13 @@ function editprofile() {
 
         })
         .fail(function (jqxhr, textStatus, err) {
-            console.log('Ajax error', textStatus);
+            //console.log('Ajax error', textStatus);
         });
 
-    // //console.log(formdata.user_handle);
-    //console.log(`name is ${name}`);
+    // ////console.log(formdata.user_handle);
+    ////console.log(`name is ${name}`);
 
-    //console.log("edit me");
+    ////console.log("edit me");
 }
 display();
 
@@ -768,8 +1060,9 @@ function post_tweet() {
     }
     else {
     var file = document.querySelector('input[type=file]').files[0];
-    console.log("imgnmae " + file);
+    //console.log("imgnmae " + file);
     var txt1 = txt;
+    console.log("txt is"+txt1);
     var hash = getHashTags($("#post_text").val());
     var post_data = {
 
@@ -789,14 +1082,14 @@ function post_tweet() {
     })
         .done(function (data) {
             // $('#result').html("invalid user_handle and password");
-            //console.log(data);
+            ////console.log(data);
             reset_tweet();
             alert("Posted Successfully");
 
             $('#result').html(JSON.stringify(data));
          })
         .fail(function (jqxhr, textStatus, err) {
-            //console.log('Ajax error',textStatus);
+            ////console.log('Ajax error',textStatus);
         });
 
     }
@@ -823,19 +1116,19 @@ function searchglobal() {
     var searchname = $("#searchname").val();
 
     var n = searchname.startsWith("#");
-    console.log(n);
+    //console.log(n);
     if (n == true) {
-        console.log("hashtag if");
+        //console.log("hashtag if");
         search_hashtag();
     }
     else {
-        console.log(" i m in else")
+        //console.log(" i m in else")
         var send_search = {
             searchname: $("#searchname").val(),
             name:name
 
         }
-        console.log("it is send"+JSON.stringify( send_search));
+        //console.log("it is send"+JSON.stringify( send_search));
         $.ajax({
             type: "POST",
 
@@ -848,18 +1141,18 @@ function searchglobal() {
                 var n = data.length;
 
                 if (n === 0) {
-                    console.log(n);
-                    $('#dispsearch').html("");
+                    //console.log(n);
+                  //  $('#dispsearch').html("");
                    // document.getElementById("dispsearch1").style.visibility = "hidden";
 
                 }
-                //console.log(data.length);
+                ////console.log(data.length);
 
-                //console.log(typeof(data));
+                ////console.log(typeof(data));
                 else {
-                    console.log("it is printed"+JSON.stringify(data));
+                    //console.log("it is printed"+JSON.stringify(data));
                     $.each(data, function (index, value) {
-console.log("hihihi");
+//console.log("hihihi");
                         html += `
                 
 
@@ -867,16 +1160,16 @@ console.log("hihihi");
                         <button class="button button4" id="followerbutton" onclick="follow(${data[index].user_id})">Follow</button>
                 `;
                     });
-                   document.getElementById("dispsearch1").style.visibility = "visible";
+                   document.getElementById("dispsearch").style.visibility = "visible";
                 
-                    $('#dispsearch1').html(html);
+                    $('#dispsearch').html(html);
                    // document.getElementById("dispsearch").style.visibility = "hidden";
 
                 }
             })
             .fail(function (jqxhr, textStatus, err) {
                 
-                //console.log('Ajax error', textStatus);
+                ////console.log('Ajax error', textStatus);
             });
             $.ajax({
                 type: "POST",
@@ -890,12 +1183,12 @@ console.log("hihihi");
                     var n = data.length;
     
                     if (n === 0) {
-                        console.log(n);
-                       $('#dispsearch').html("");
+                        //console.log(n);
+                       //$('#dispsearch').html("");
                     }
-                    //console.log(data.length);
+                    ////console.log(data.length);
     
-                    //console.log(typeof(data));
+                    ////console.log(typeof(data));
                     else {
                         $.each(data, function (index, value) {
     
@@ -915,7 +1208,7 @@ console.log("hihihi");
                 })
                 .fail(function (jqxhr, textStatus, err) {
                     
-                    //console.log('Ajax error', textStatus);
+                    ////console.log('Ajax error', textStatus);
                 });
 
     }
@@ -931,7 +1224,9 @@ function searchglobalunfollow() {
 
 
 function follow(index){
-    console.log("sfhvajsf"+index);
+   $('#dispsearch').html("");
+
+    //console.log("sfhvajsf"+index);
     var user_handle = name;
    
     var index1 = {
@@ -939,7 +1234,7 @@ function follow(index){
         index: index
 
     }
-    console.log(index);
+    //console.log(index);
     $.ajax({
         type: "POST",
 
@@ -949,14 +1244,14 @@ function follow(index){
 
     })
         .done(function (data) {
-            console.log("done");
+            //console.log("done");
             
         })
         .fail(function (jqxhr, textStatus, err) {
-            console.log('Ajax error', textStatus);
+            //console.log('Ajax error', textStatus);
         });
         $('#searchname').val("");
-    $('#dispsearch').html("");
+    // $('#dispsearch').html("");
     $('#dispsearchHash').html("");
     $('#dispsearch1').html("");
 
@@ -964,7 +1259,9 @@ function follow(index){
 }
 
 function unfollow(index){
-    console.log("sfhvajsf"+index);
+   $('#dispsearch').html("");
+
+    //console.log("sfhvajsf"+index);
     var user_handle = name;
    
     var index1 = {
@@ -972,7 +1269,7 @@ function unfollow(index){
         index: index
 
     }
-    console.log(index);
+    //console.log(index);
     $.ajax({
         type: "POST",
 
@@ -982,14 +1279,14 @@ function unfollow(index){
 
     })
         .done(function (data) {
-            console.log("done");
+            //console.log("done");
             
         })
         .fail(function (jqxhr, textStatus, err) {
-            console.log('Ajax error', textStatus);
+            //console.log('Ajax error', textStatus);
         });
         $('#searchname').val("");
-    $('#dispsearch').html("");
+   // $('#dispsearch').html("");
     $('#dispsearchHash').html("");
     $('#dispsearch1').html("");
 
@@ -998,7 +1295,7 @@ function unfollow(index){
 
 function search_hashtag() {
     var html ="";
-    console.log("search hashtag");
+    //console.log("search hashtag");
     var searchname = $("#searchname").val();
     var send_search = {
         searchname
@@ -1020,7 +1317,7 @@ function search_hashtag() {
 
             else{
                 $.each(data, function (index, value) {
-console.log(data[index].media);
+//console.log(data[index].media);
                     html+=`
                     
                   <center>  @${data[index].userhandle}</center><br>
@@ -1028,13 +1325,13 @@ console.log(data[index].media);
                         
                 `;
                             });
-                   document.getElementById("dispsearchHash").style.visibility = "visible";
+                   document.getElementById("dispsearch").style.visibility = "visible";
 
-            $('#dispsearchHash').html(html);
+            $('#dispsearch').html(html);
             }
         })
         .fail(function (jqxhr, textStatus, err) {
-            console.log('Ajax error', textStatus);
+            //console.log('Ajax error', textStatus);
         });
 
 
@@ -1044,17 +1341,17 @@ console.log(data[index].media);
 
 
 function retweet(index){
-    console.log("retweet ajax");
+    //console.log("retweet ajax");
     var user_handle = name;
     
-    console.log("tweet id is"+index);
+    //console.log("tweet id is"+index);
 var post_data ={
     //user_id:id,
     user_handle,
     tweet_id:index
 
 }
-console.log(post_data);
+//console.log(post_data);
 
     $.ajax({
         type:"POST",
@@ -1073,23 +1370,23 @@ console.log(post_data);
       
     })
     .fail(function(jqxhr,textStatus,err){
-        console.log('Ajax error',textStatus);
+        //console.log('Ajax error',textStatus);
     });
 
 }
 
 function retweetpost(index){
-    console.log("retweet ajax");
+    //console.log("retweet ajax");
     var user_handle = name;
     
-    console.log("tweet id is"+index);
+    //console.log("tweet id is"+index);
 var post_data ={
     //user_id:id,
     user_handle,
     tweet_id:index
 
 }
-console.log(post_data);
+//console.log(post_data);
 
     $.ajax({
         type:"POST",
@@ -1105,7 +1402,7 @@ console.log(post_data);
       
     })
     .fail(function(jqxhr,textStatus,err){
-        console.log('Ajax error',textStatus);
+        //console.log('Ajax error',textStatus);
     });
 
 }

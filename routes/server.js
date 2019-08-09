@@ -19,6 +19,7 @@ app.use(session({
 app.use('/home/assets', express.static(__dirname + '/../views/assets'));
 app.use('/home/images', express.static(__dirname + '/../views/images'));
 app.use('/views/assets', express.static(__dirname + '/../views/assets'));
+//app.use('/home/profile_image', express.static(__dirname + '/../views/js'));
 
 app.use('/assets', express.static(__dirname + '/../views/assets'));
 app.use('/js', express.static(__dirname + '/../views/js'));
@@ -26,6 +27,7 @@ app.use('/home', express.static(__dirname + '/../views/index.html'));
 //app.use('/home/:name', express.static(__dirname + '/../views/index.html'));
 app.use('/home/profile_image', express.static(__dirname + '/../views/profile_image'));
 app.use('/home/tweet_image', express.static(__dirname + '/../views/tweet_image'));
+//app.use('/home/profile_image', express.static(__dirname + '/../views/js'));
 
 app.use('/images', express.static(__dirname + '/../views/images'));
 // app.use('/ajaxcall', express.static(__dirname + '/views/login.html'));
@@ -70,8 +72,11 @@ app.post('/home/editprofileget', vlass.editprofileget);
 //app.post('/home/postimage', vlass.postimage);
 app.post('/home/displaytweets', vlass.displaytweets);
 app.post('/home/displayretweets', vlass.displayretweets);
+app.post('/home/following', vlass.following);
+app.post('/home/followers', vlass.followers);
 
 app.post('/home/globaltweets', vlass.globaltweets);
+
 
 app.post('/home/retweet', vlass.retweet);
 app.post('/home/retweetpost', vlass.retweetpost);
@@ -93,6 +98,6 @@ app.post('/home/delete_tweet', vlass.delete_tweet);
 //app.post('/home/likecountdisplay', vlass.likecountdisplay);
 //app.post('/home/likecountPost', vlass.likecountPost);
 
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 7000;
 app.listen(port,()=>console.log(`listening on port ${port}`));
 module.exports = app;

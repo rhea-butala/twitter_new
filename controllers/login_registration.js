@@ -47,7 +47,7 @@ class Login_registration {
     }
     followercount(request, response){
         var user_handle = request.body.name;
-        console.log("it si "+request.body.name);
+        //console.log("it si "+request.body.name);
 
         connection.query('SELECT count(*) FROM user_follower WHERE user_handle = ? ', [user_handle], function (error, results, fields) {
             response.send(results);
@@ -79,13 +79,14 @@ class Login_registration {
 
 
         bcrypt.hash(courses.password_hash, 10, function (err, hash) {
-            if (err) //console.log(err);
+            if (err)
+            console.log(err);
                 courses.password_hash = hash;
             connection.query(`INSERT INTO user set?`, [courses])
             //response.sendFile(path.join(__dirname + '/../views/login.html'));
             response.redirect('/');
 
-            //console.log(courses.password_hash);
+            ////console.log(courses.password_hash);
 
         });
 
@@ -96,7 +97,7 @@ class Login_registration {
 
         // response.sendFile(path.join(__dirname + '/views/login.html'));
 
-        // //console.log(user_handle);
+        // ////console.log(user_handle);
 
 
     }
@@ -106,11 +107,11 @@ class Login_registration {
 
         var profile_image = request.body.profile_image;
         var user_handle = request.body.user_handle;
-        //console.log("edit func");
-        // //console.log(profile_image);
-        // //console.log(user_handle);
+        ////console.log("edit func");
+        // ////console.log(profile_image);
+        // ////console.log(user_handle);
 
-        //  //console.log("hi");
+        //  ////console.log("hi");
         connection.query('update user set profile_image=? where user_handle=?', [profile_image, user_handle]);
 
 
@@ -123,16 +124,16 @@ class Login_registration {
         // var user_handle = request.body.user_handle;
         var user_handle = request.body.user_handle;
         var img;
-        // //console.log("edit func");
-        // //console.log(profile_image);
-        // //console.log(user_handle);
+        // ////console.log("edit func");
+        // ////console.log(profile_image);
+        // ////console.log(user_handle);
 
-        //  //console.log("hi");
+        //  ////console.log("hi");
         connection.query('select profile_image from user where user_handle=?', [user_handle], function (error, results, fields) {
             if (results.length > 0) {
 
                 response.send(results);
-                console.log(results);
+                //console.log(results);
             }
             response.end();
         });
@@ -148,11 +149,11 @@ class Login_registration {
             response.send('Welcome back, ' + request.session.name + '!');
             // response.sendFile(path.join(__dirname + '/home'));
             //response.redirect('login.html');
-            ////console.log("hii");
+            //////console.log("hii");
             //response.render('index.html');
             //response.sendFile(path.join(__dirname + '/login.html'));
             //  var name =request.session.user_handle;
-            // //console.log(name);
+            // ////console.log(name);
             // response.sendFile(path.join(__dirname + '/index.html', {name:name}));
 
         } else {
@@ -167,7 +168,7 @@ class Login_registration {
 
 
     emailforgotpass(request,response){
-        console.log("i m in class email")
+        //console.log("i m in class email")
         var email = request.body.email;
         connection.query('select * from user where email =?',[email],function(err,data){
             if(data.length >0)
@@ -177,16 +178,16 @@ class Login_registration {
                      email:email
                  };
                  connection.query('update user set reset_password = 0 where user_id=?',[data[0].user_id]);
-                 console.log(payload.id);
+                 //console.log(payload.id);
                  var secret = data[0].password_hash +'-'+data[0].updated_at;
                  secretsend = secret;
                  //var secret='fe1a1915a379f3be5394b64d14794932-1506868106675';
                  var token = jwt.encode(payload, secretsend);
-                 console.log(token);
+                 //console.log(token);
 
                 
                  //var final = jwt.decode(token,secretsend);
-                 //console.log(final);
+                 ////console.log(final);
                 let transporter = nodemailer.createTransport({
                     host: 'smtp.mailtrap.io',
                     port: 2525,
@@ -201,18 +202,18 @@ class Login_registration {
                     to: email,         // List of recipients
                     subject: 'reset Password', // Subject line
                     text: 'Have the most fun you can in a car. Get your Tesla today!', 
-                    html:'<a href="http://localhost:4000/resetpassword/' + payload.id + '/' + token + '">Reset password</a>'// Plain text body
+                    html:'<a href="http://localhost:7000/resetpassword/' + payload.id + '/' + token + '">Reset password</a>'// Plain text body
                 };
                 transporter.sendMail(message, function(err, info) {
                     if (err) {
                       console.log(err)
                     } else {
-                      console.log(info);
+                      //console.log(info);
                     }
                 });
                
                response.send("Password reset link has been sent to you"); 
-               console.log(data);
+               //console.log(data);
             }
             else{
                 response.send("this email doesnt exist");
@@ -224,13 +225,13 @@ class Login_registration {
     resetpassword(request,response){
         var id = request.params.id;
         var secret = secretsend;
-        console.log(secret);
+        //console.log(secret);
        
        // var secret = 'fe1a1915a379f3be5394b64d14794932-1506868106675';
         var token = request.params.token;
-        console.log(token);
+        //console.log(token);
        //var decoded = jwt.decode(token, secret);
-      // console.log("paylod" +decoded.email);
+      // //console.log("paylod" +decoded.email);
          
     response.send
     (
@@ -255,9 +256,9 @@ class Login_registration {
 
     resetpasswordnext(request,response){
         var id = request.body.id;
-        console.log(id);
+        //console.log(id);
         var secret = secretsend;
-        console.log(secret);
+        //console.log(secret);
         
         //var secret = 'fe1a1915a379f3be5394b64d14794932-1506868106675';
        // var payload = jwt.decode(request.body.token, secret);
@@ -265,7 +266,7 @@ class Login_registration {
        var password = request.body.password;
         var password_hash = '';
         var decoded = jwtDecode(token, secret);
-       console.log("payload final" +decoded.id);
+       //console.log("payload final" +decoded.id);
        connection.query('select * from user where user_id=?',[id],function(err,data)
        {
 
@@ -279,7 +280,7 @@ class Login_registration {
                 if (err) 
                 console.log(err);
 
-                console.log(hash);
+                //console.log(hash);
                 var hashsplit = hash.split("$2b$10$");
                password_hash = hashsplit[1];
                //var password_hash = hash;
@@ -292,7 +293,7 @@ class Login_registration {
 
         }
        });
-        //console.log(payload);
+        ////console.log(payload);
         
        
             
@@ -311,13 +312,13 @@ class Login_registration {
 
     for_password(request, response) {
         var email = request.body.email;
-        //  //console.log(JSON.stringify(email));
+        //  ////console.log(JSON.stringify(email));
         connection.query('select user_id from user where email= ? ', [request.body.email], function (err, data) {
             if (err)
                 console.log(err);
             else {
                 response.send(JSON.stringify(data));
-                //  //console.log(data);
+                //  ////console.log(data);
 
             }
         });
@@ -331,9 +332,9 @@ class Login_registration {
         var user_handle = request.body.user_handle;
 
         var password = request.body.password;
-        // //console.log(user_handle);
+        // ////console.log(user_handle);
         if (user_handle && password) {
-            //  //console.log("hi");
+            //  ////console.log("hi");
             connection.query('SELECT * FROM user WHERE user_handle = ? AND password = ?', [user_handle, password], function (error, data, fields) {
                 if (data.length > 0) {
                     request.session.loggedin = true;
@@ -344,12 +345,12 @@ class Login_registration {
                 } else {
                     var num = '';
                     response.send(num);
-                    console.log("num" +num);
+                    //console.log("num" +num);
                 }
                 response.end();
             });
         } else {
-            //   //console.log("hi2");
+            //   ////console.log("hi2");
 
             response.send('Please enter Username and Password!');
             response.end();
@@ -359,7 +360,7 @@ class Login_registration {
 
 
    retweet(request, response){
-console.log("retweet class");
+//console.log("retweet class");
         var tweet_id = request.body.tweet_id;
        var user_handle= request.body.user_handle;
          const  tweet ={
@@ -377,7 +378,7 @@ console.log("retweet class");
               else
               {
                 //idname= data[0].user_id;
-                //  console.log(idname);
+                //  //console.log(idname);
               } 
     
           });
@@ -391,7 +392,7 @@ console.log("retweet class");
     }
 
     retweetpost(request, response){
-        console.log("retweet insert class");
+        //console.log("retweet insert class");
                 var tweet_id = request.body.tweet_id;
                var user_handle= request.body.user_handle;
                  const  tweet ={
@@ -415,7 +416,7 @@ console.log("retweet class");
                       else
                       {
                         //idname= data[0].user_id;
-                        //  console.log(idname);
+                        //  //console.log(idname);
                       } 
             
                   });
@@ -431,12 +432,12 @@ console.log("retweet class");
       // var likecount = request.body.likecount;
         var tweet_id = request.body.tweet_id;
         var name =request.body.name;
-        console.log("tweet_id"+tweet_id);
-        console.log("name"+name);
+        //console.log("tweet_id"+tweet_id);
+        //console.log("name"+name);
 
         connection.query('select * from like_post where user_id=(select user_id from user where user_handle =?) and tweet_id = ?',[name, tweet_id],function(err,data){
             response.send(data);
-            console.log("data is like"+JSON.stringify(data));
+            //console.log("data is like"+JSON.stringify(data));
       //  connection.query('insert into like_post (user_id, tweet_id) values ((select user_id from user where user_handle = ?) ,? )',[name, tweet_id],function(err,data){
 
         });
@@ -454,9 +455,9 @@ console.log("retweet class");
       }
     displaytweets(request, response) {
         var userhandle = request.body.userhandle;
-        connection.query('select * from tweets where userhandle = ? or user_retweeted =? order by updated_at desc', [userhandle,userhandle], function (err, data) {
+        connection.query('select * from tweets t inner join user u on t.userhandle = u.user_handle where t.userhandle = ? or t.user_retweeted =? order by t.updated_at desc; ', [userhandle,userhandle], function (err, data) {
             response.send(data);
-            console.log(data[0].updated_at);
+            //console.log(data[0].updated_at);
             if (err) {
                 response.send("error");
             }
@@ -464,10 +465,10 @@ console.log("retweet class");
     }
     displayretweets(request, response) {
         var userhandle = request.body.userhandle;
-        console.log("hi");
-        connection.query('select distinct t.tweet_id,post_text,media,userhandle,likecount,updated_at from tweets t , retweet r where t.userhandle=? or (t.tweet_id = r.tweet_id and r.user_id=(select user_id from user where user_handle= ?)) order by updated_at desc;  ', [userhandle,userhandle], function (err, data) {
+        //console.log("hi");
+        connection.query('select * from tweets t inner join user u on t.userhandle = u.user_handle where t.userhandle = ? or t.user_retweeted =?;', [userhandle,userhandle], function (err, data) {
             response.send(data);
-            console.log(JSON.stringify("retweet"+data));
+            //console.log(JSON.stringify("retweet"+data));
             if (err) {
                 response.send("error");
             }
@@ -485,9 +486,9 @@ console.log("retweet class");
 
     // }
     // likecountdisplay(request, response){
-    //     console.log("function");
+    //     //console.log("function");
     //     var tweet_id = request.body.tweet_id;
-    //     console.log(tweet_id);
+    //     //console.log(tweet_id);
     //     connection.query('update tweet.tweets set likecount=(select count(*) from tweet.like_post where tweet_id = ?) where tweet_id=?   ', [tweet_id,tweet_id], function (err, data) {
     //         response.send(data);
            
@@ -496,13 +497,13 @@ console.log("retweet class");
 
     // }
     globaltweets(request, response) {
-        console.log("hi global tweet");
+        //console.log("hi global tweet");
         var userhandle = request.body.userhandle;
-        console.log("userhandle"+userhandle);
-        connection.query(' select  t.tweet_id,t.post_text,t.hashtag,t.media,t.userhandle,t.updated_at,t.likecount,t.created_at,t.user_retweeted from user_follower uf inner join user u on uf.follower_id = u.user_id inner join tweets t on t.userhandle = u.user_handle  where uf.user_id=(select user_id from user where user_handle=?) group by t.tweet_id order by t.updated_at desc;', [userhandle], function (err, data) {
+        //console.log("userhandle"+userhandle);
+        connection.query(' select u.profile_image, t.tweet_id,t.post_text,t.hashtag,t.media,t.userhandle,t.updated_at,t.likecount,t.created_at,t.user_retweeted from user_follower uf inner join user u on uf.follower_id = u.user_id inner join tweets t on t.userhandle = u.user_handle  where uf.user_id=(select user_id from user where user_handle=?) group by t.tweet_id order by t.updated_at desc;', [userhandle], function (err, data) {
             response.send(data);
-            console.log(JSON.stringify(data));
-           // console.log(data[0].updated_at);
+            //console.log(JSON.stringify(data));
+           // //console.log(data[0].updated_at);
             if (err) {
                 response.send("error");
             }
@@ -514,18 +515,37 @@ console.log("retweet class");
 
     for_password(request, response) {
         var email = request.body.email;
-        //  //console.log(JSON.stringify(email));
+        //  ////console.log(JSON.stringify(email));
         connection.query('select user_id from user where email= ? ', [request.body.email], function (err, data) {
             if (err)
                 console.log(err);
             else {
                 response.send(JSON.stringify(data));
-                //  //console.log(data);
+                //  ////console.log(data);
 
             }
         });
     }
+    following(request, response){
+    var name = request.body.name;
 
+    connection.query('select * from user_follower where user_id=(select user_id from user where user_handle =?)',[name],function(err,data){
+
+        response.send(data);
+   
+       
+    });
+    }
+    followers(request, response){
+        var name = request.body.name;
+    
+        connection.query('select * from user_follower where follower_id=(select user_id from user where user_handle =?)',[name],function(err,data){
+    
+            response.send(data);
+       
+           
+        });
+        }
 follow(request, response){
     var follower_id = request.body.index;
     var namefollower = request.body.user_handle;
@@ -540,7 +560,7 @@ follow(request, response){
         else
         {
           //idname= data[0].user_id;
-          //  console.log(idname);
+          //  //console.log(idname);
         } 
 
     });
@@ -563,7 +583,7 @@ unfollow(request, response){
         else
         {
           //idname= data[0].user_id;
-          //  console.log(idname);
+          //  //console.log(idname);
         } 
 
     });
@@ -574,7 +594,7 @@ unfollow(request, response){
 
 delete_tweet(request, response){
         var tweet_id = request.body.tweet_id;
-console.log("delete"+ tweet_id);
+//console.log("delete"+ tweet_id);
 
         connection.query('delete from tweets where tweet_id=?; delete from retweet where tweet_id=?',[tweet_id,tweet_id],function(err,data){
 
@@ -586,18 +606,18 @@ console.log("delete"+ tweet_id);
 }
 
     search_profile(request, response) {
-        console.log("i m in class")
+        //console.log("i m in class")
 
         var searchname = request.body.searchname;
         var name = request.body.name;
-        console.log("searchname"+searchname);
-        console.log("name"+name);
+        //console.log("searchname"+searchname);
+        //console.log("name"+name);
 
         connection.query(` select * from user where user_handle = ? and not exists(select * from user_follower where user_id=(select user_id from user where user_handle =? ) and follower_id =(select user_id from user where user_handle=?))   `, [searchname, name,searchname], function (err, data) {
-            console.log("hi");
+            //console.log("hi");
 
             response.send(data);
-console.log("data"+JSON.stringify(data));
+//console.log("data"+JSON.stringify(data));
                
          
 
@@ -605,16 +625,16 @@ console.log("data"+JSON.stringify(data));
     }
 
     search_profileunfollow(request, response) {
-        console.log("i m in class")
+        //console.log("i m in class")
 
         var searchname = request.body.searchname;
         var name = request.body.name;
-        console.log(name);
+        //console.log(name);
         connection.query(` select * from user where user_handle = ? and exists(select * from user_follower where user_id=(select user_id from user where user_handle =? ) and follower_id =(select user_id from user where user_handle=?))   `, [searchname, name,searchname], function (err, data) {
-            console.log("hi");
+            //console.log("hi");
 
             response.send(data);
-console.log(data);
+//console.log(data);
                
          
 
@@ -642,9 +662,9 @@ console.log(data);
         // var media = request.body.media;
         var userhandle = request.body.userhandle;
         //var likecount = '0';
-        //console.log(userhandle);
-        //console.log(post_text);
-        //console.log("hiiiiii");
+        ////console.log(userhandle);
+        ////console.log(post_text);
+        ////console.log("hiiiiii");
 
         const tweet = {
             post_text,
@@ -657,13 +677,13 @@ console.log(data);
             // user_handle 
 
         }
-        //console.log(post_text);
-        console.log(tweet);
-
+        ////console.log(post_text);
         //console.log(tweet);
 
-        //console.log(tweet.post_text);
-        //console.log(tweet.userhandle);
+        ////console.log(tweet);
+
+        ////console.log(tweet.post_text);
+        ////console.log(tweet.userhandle);
 
 
         connection.query('Insert into tweets set ?', [tweet])
@@ -681,12 +701,12 @@ console.log(data);
 
         var id = request.body.id;
 
-        //console.log("id is"+id);
+        ////console.log("id is"+id);
 
         // var password = request.body.password;
-        // //console.log(user_handle);
+        // ////console.log(user_handle);
         if (id) {
-            //  //console.log("hi");
+            //  ////console.log("hi");
             connection.query(`SELECT * FROM user WHERE id = ? `, [id], function (error, data, fields) {
                 if (data.length > 0) {
                     request.session.loggedin = true;
@@ -700,7 +720,7 @@ console.log(data);
                 response.end();
             });
         } else {
-            //   //console.log("hi2");
+            //   ////console.log("hi2");
 
             response.send('Please enter Username and Password!');
             response.end();

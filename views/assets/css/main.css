@@ -6,6 +6,11 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
+.iframe{
+	width: 0%;
+	height: 0%;
+	visibility: hidden;
+}
 
 html, body, div, span, applet, object,
 iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
@@ -78,13 +83,18 @@ color: red;
   }
   .img1 {
 	  max-width: 100%;
-	  height: auto;
+	  height: 100%;
+	  align-content: center;
+	  border-radius: 50%;
+	  float: right;
   }
   .p-image {
+	 
 	  float: left;
+	  
 	/* position: absolute; */
 	top: 167px;
-	right: 30px;
+	right: auto;
 	color: #666666;
 	transition: all .3s cubic-bezier(.175, .885, .32, 1.275);
   }
@@ -104,6 +114,7 @@ color: red;
 	float: center;
 }
 .button {
+	border: 1px solid black;
 	margin-top: 30px;
 	background-color: blue; /* Green */
 	border: none;
@@ -117,7 +128,9 @@ color: red;
 	cursor: pointer;
   }
   
-.button4 {border-radius: 12px;}
+.button4 {border-radius: 12px;
+	border: 1px solid white;
+	}
 
 .userhandle{
 	color: gray;
@@ -2649,7 +2662,7 @@ input, select, textarea {
 	}
 
 		ul.posts li {
-			border-top: dotted 1px rgba(160, 160, 160, 0.3);
+			/* border-top: dotted 1px rgba(160, 160, 160, 0.3); */
 			margin: 1.5em 0 0 0;
 			padding: 1.5em 0 0 0;
 		}
@@ -2756,7 +2769,7 @@ input, select, textarea {
 
 		.mini-post header {
 			padding: 1.25em 4.25em 0.1em 1.25em ;
-			min-height: 4em;
+			/* min-height: 4em; */
 			position: relative;
 			-moz-flex-grow: 1;
 			-webkit-flex-grow: 1;
@@ -2828,6 +2841,14 @@ input, select, textarea {
 		}
 
 /* Post */
+.Profile_post_img{
+	border-radius: 50%;
+	height: 50px;
+	width: 50px;
+
+
+}
+
 
 	.post {
 		padding: 3em 3em 1em 3em ;

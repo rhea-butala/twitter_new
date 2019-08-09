@@ -12,7 +12,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	</head>
-	<body class="is-preload" onload="globaltweets()" >
+	<body class="is-preload" onload="globaltweets(); mainfunc()" >
 		<div id="scroll-top"></div>
 		<!-- Wrapper -->
 			<div id="wrapper">
@@ -49,9 +49,7 @@
 
 						</section>
 						<div id = "dispsearch"></div>
-						<div id = "dispsearch1"></div>
-
-						<div id = "dispsearchHash"></div>
+						
 						<!-- Links -->
 						
 						<!-- Actions -->
@@ -87,12 +85,12 @@
 									<h2>Twitter</h2>
 									
 									<center>
-											<div class="row">
+											<div class="row" style="float: center">
 													
 													<div class="small-12 medium-2 large-2 columns">
 													 
 														<!-- User Profile Image -->
-														<img class="profile-pic img1" src="images/logo.jpg" id="profile_image" alt="Enter your profile image"> 
+														<img class="profile-pic img1" src="" id="profile_image" alt=""> 
 												 
 														<!-- Default Image -->
 														<!-- <i class="fa fa-user fa-5x"></i> -->
@@ -105,7 +103,9 @@
 
 												 </div>
 										<!-- <i class="fa fa-user-circle-o usericon" style="font-size:48px;color:black"></i> -->
-									<div class="username" id="namedisp"></div>
+
+										<br><br>
+									<div class="username" id="namedisp"></div><br><br><br>
 									<!-- <div class="userhandle">@User Handle</div></center> -->
 									<div class="follow" id="follow"></div>
 									
@@ -117,23 +117,21 @@
 								
 							</section>
 							
-							<center>
+							<center><br><br>
 									<button type="button" class="button button4" onclick="globaltweets()">
 											Home
-										  </button>
+										  </button><br>
 										<button type="button" class="button button4" onclick="displaytweets()" >
 												YourTweet
 											  </button>
-											  <button type="button" class="button button4" onclick="displayretweets()" >
-												Your Retweets
-											  </button> <br>
-											<div class="buttontweet"><button type="button" class=" button button4" id="postbutton" onclick="tweetfunction()">
-												Tweet
-											  </button></div>
 											  <br>
+											<button type="button" class="button button4 " id="postbutton" onclick="tweetfunction()">
+												Tweet
+											  </button>
+											  <br> <br> 
 											  <div class="postid" id="postid" style="visibility:hidden"><section>
-												<textarea type="text" name="post_text" id="post_text"></textarea>
-									<label>Enter Your post</label><br><br>
+												<textarea type="text" name="post_text" id="post_text" maxlength="100"></textarea>
+									<label>Enter Your post</label><br> <div style="font-size: 13px;"><i> max length 100 characters</i></div><br>
 									
 									
 									<input type="file"  accept="video/*|image/*" name="media" class="media" id="media" onchange="imagechange()">
