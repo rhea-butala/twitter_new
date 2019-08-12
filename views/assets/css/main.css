@@ -2731,7 +2731,7 @@ input, select, textarea {
 
 #main{
 	overflow: scroll;
-	height: 800px;
+	height: 1440px;
 }
 	.mini-post {
 		display: -moz-flex;

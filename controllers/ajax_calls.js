@@ -50,8 +50,10 @@ function imagechange() {
 function display() {
     //console.log(following_no +" "+ followers_no);
     ////console.log(following+"following outside");
-
-    document.getElementById("namedisp").innerHTML = `@${name}`;
+    var url = window.location.pathname;
+    var name_disp = url.substring(url.lastIndexOf('/')+1);
+    console.log(name_disp);
+    document.getElementById("namedisp").innerHTML = `@${name_disp}`;
    
    var senddata={
        name:name
@@ -60,7 +62,7 @@ function display() {
   //  //console.log(senddata);
     
     $.ajax({
-        type: "POST",
+        type: "get",
 
         url: window.location + "/followercount",
         data: senddata,
@@ -149,7 +151,7 @@ function displaytweets(){
         userhandle:name
     }
     $.ajax({
-        type:"post",
+        type:"get",
         url:window.location +"/displaytweets",
         data : post_data,
         
@@ -426,7 +428,7 @@ function delete_tweet(tweet_id){
     }
     //console.log(formdata);
     $.ajax({
-        type: "POST",
+        type: "delete",
 
         url: window.location + "/delete_tweet",
         data: formdata,
@@ -514,7 +516,7 @@ function globaltweets(){
         userhandle:name
     }
     $.ajax({
-        type:"post",
+        type:"get",
         url:window.location +"/globaltweets",
         data : post_data,
         
@@ -779,7 +781,7 @@ function following(name){
    }
    //console.log("name is"+name);
     $.ajax({
-        type: "POST",
+        type: "get",
 
         url: window.location + "/following",
         data: post_data,
@@ -808,7 +810,7 @@ function followers(name){
     }
     //console.log("name is in followers"+name);
      $.ajax({
-         type: "POST",
+         type: "get",
  
          url: window.location + "/followers",
          data: post_data,
@@ -842,7 +844,7 @@ display();
     }
 
     $.ajax({
-        type: "POST",
+        type: "get",
 
         url: window.location + "/editprofileget",
         data: post_data,
@@ -860,7 +862,7 @@ display();
 
             }
             else{
-                image.src='home/profile_image/default_profile.jpeg';
+                image.src=`home/profile_image/default_profile.jpeg`;
             }
             //console.log();
             //console.log("data is" + data[0].profile_image);
@@ -950,7 +952,7 @@ function get() {
             // ////console.log(datanew[0].Name);
             $('#getResponse').html(name);
             // window.location.href = `http://localhost:3000/home/${name}`;
-            window.location.href = `http://localhost:7000/home`;
+            window.location.href = `http://localhost:7000/home/${name}`;
 
 
             }
@@ -1271,7 +1273,7 @@ function unfollow(index){
     }
     //console.log(index);
     $.ajax({
-        type: "POST",
+        type: "delete",
 
         url: window.location + "/unfollow",
         data: index1,

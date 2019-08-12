@@ -4,7 +4,7 @@ const Joi = require('joi');
 var mysql = require('mysql');
 var bodyParser = require('body-parser');
 //var routes = require('./route.js');
-var connection = require('../connect.js');
+var connection = require('./connect.js');
 var session = require('express-session');
 var path = require('path');
 var bcrypt = require('bcrypt');
@@ -17,7 +17,7 @@ app.use(bodyParser.json());
 "use strict"
 var secretsend ='';
 
-class Login_registration {
+class Twitter_user {
     getindex(request, response) {
         response.sendFile(path.join(__dirname + '/../views/login.html'));
     }
@@ -46,7 +46,7 @@ class Login_registration {
         }
     }
     followercount(request, response){
-        var user_handle = request.body.name;
+        var user_handle = request.params.name;
         //console.log("it si "+request.body.name);
 
         connection.query('SELECT count(*) FROM user_follower WHERE user_handle = ? ', [user_handle], function (error, results, fields) {
@@ -157,7 +157,7 @@ class Login_registration {
     editprofileget(request, response) {
 
         // var user_handle = request.body.user_handle;
-        var user_handle = request.body.user_handle;
+        var user_handle = request.params.name;
         var img;
         // ////console.log("edit func");
         // ////console.log(profile_image);
@@ -239,6 +239,8 @@ class Login_registration {
                     text: 'Have the most fun you can in a car. Get your Tesla today!', 
                     html:'<a href="http://localhost:7000/resetpassword/' + payload.id + '/' + token + '">Reset password</a>'// Plain text body
                 };
+
+
                 transporter.sendMail(message, function(err, info) {
                     if (err) {
                       console.log(err)
@@ -283,7 +285,7 @@ class Login_registration {
                 '<input type="submit" style=" width: 100%;background-color: #4CAF50; color: white; padding: 14px 20px;margin: 8px 0; border: none;border-radius: 4px;cursor: pointer;" value="Reset Password" /> '+
             '</form>'+
             
-            '<script src="js/login_ajaxcall.js"></script>'+
+            '<script src="../controllers/ajax_calls.js" charset="utf-8" ></script>'+
     '</body>');
    
     
@@ -489,7 +491,7 @@ class Login_registration {
           });
       }
     displaytweets(request, response) {
-        var userhandle = request.body.userhandle;
+        var userhandle = request.params.name;
         connection.query('select * from tweets t inner join user u on t.userhandle = u.user_handle where t.userhandle = ? or t.user_retweeted =? order by t.updated_at desc; ', [userhandle,userhandle], function (err, data) {
             response.send(data);
             //console.log(data[0].updated_at);
@@ -533,7 +535,7 @@ class Login_registration {
     // }
     globaltweets(request, response) {
         //console.log("hi global tweet");
-        var userhandle = request.body.userhandle;
+        var userhandle = request.params.name;
         //console.log("userhandle"+userhandle);
         connection.query(' select u.profile_image, t.tweet_id,t.post_text,t.hashtag,t.media,t.userhandle,t.updated_at,t.likecount,t.created_at,t.user_retweeted from user_follower uf inner join user u on uf.follower_id = u.user_id inner join tweets t on t.userhandle = u.user_handle  where uf.user_id=(select user_id from user where user_handle=?) group by t.tweet_id order by t.updated_at desc;', [userhandle], function (err, data) {
             response.send(data);
@@ -562,7 +564,7 @@ class Login_registration {
         });
     }
     following(request, response){
-    var name = request.body.name;
+    var name = request.params.name;
 
     connection.query('select * from user_follower where user_id=(select user_id from user where user_handle =?)',[name],function(err,data){
 
@@ -572,7 +574,7 @@ class Login_registration {
     });
     }
     followers(request, response){
-        var name = request.body.name;
+        var name = request.params.name;
     
         connection.query('select * from user_follower where follower_id=(select user_id from user where user_handle =?)',[name],function(err,data){
     
@@ -764,4 +766,4 @@ delete_tweet(request, response){
     }
 }
 
-module.exports = Login_registration;
+module.exports = Twitter_user;
