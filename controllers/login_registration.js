@@ -57,50 +57,7 @@ class Login_registration {
 
 
     }
-    postauth2(request, response) {
-        var user_handle = request.body.user_handle;
-        var password = request.body.password;
-        var Name = request.body.Name;
-        var email = request.body.email;
-        var password_hash = request.body.password_hash;
-        const courses = {
-            user_handle,
-            password,
-            Name,
-            email,
-            password_hash
-
-
-        };
-
-
-
-        // connection.query(`INSERT INTO user set?`,[courses])
-
-
-        bcrypt.hash(courses.password_hash, 10, function (err, hash) {
-            if (err)
-            console.log(err);
-                courses.password_hash = hash;
-            connection.query(`INSERT INTO user set?`, [courses])
-            //response.sendFile(path.join(__dirname + '/../views/login.html'));
-            response.redirect('/');
-
-            ////console.log(courses.password_hash);
-
-        });
-
-
-
-
-
-
-        // response.sendFile(path.join(__dirname + '/views/login.html'));
-
-        // ////console.log(user_handle);
-
-
-    }
+    
     editprofile(request, response) {
 
         // var user_handle = request.body.user_handle;
@@ -119,6 +76,84 @@ class Login_registration {
 
 
     }
+    postauth2(request, response) {
+        var user_handle = request.body.user_handle;
+        var password = request.body.password;
+        var Name = request.body.Name;
+        var email = request.body.email;
+        var password_hash = request.body.password_hash;
+        const courses = {
+            user_handle,
+            password,
+            Name,
+            email,
+            password_hash
+
+
+        };
+
+        connection.query('select * from user where user_handle =?',[user_handle],function(err,data){
+            if(data.length > 0){
+                var value ='';
+                response.send(value);
+
+            }
+            else
+            {
+                bcrypt.hash(courses.password_hash, 10, function (err, hash) {
+                    if (err) //console.log(err);
+                        courses.password_hash = hash;
+                    connection.query(`INSERT INTO user set?`, [courses])
+                    //response.sendFile(path.join(__dirname + '/../views/login.html'));
+                    response.redirect('/');
+        
+                    //console.log(courses.password_hash);
+        
+                });
+        
+
+            }
+        })
+
+
+
+        // connection.query(`INSERT INTO user set?`,[courses])
+
+
+        // bcrypt.hash(courses.password_hash, 10, function (err, hash) {
+        //     if (err) //console.log(err);
+        //         courses.password_hash = hash;
+        //     connection.query(`INSERT INTO user set?`, [courses])
+        //     //response.sendFile(path.join(__dirname + '/../views/login.html'));
+        //     response.redirect('/');
+
+        //     //console.log(courses.password_hash);
+
+        // });
+
+
+
+
+
+
+        // response.sendFile(path.join(__dirname + '/views/login.html'));
+
+        // //console.log(user_handle);
+
+
+    }
+      postauth3(request,response){
+      var user_handle = request.body.user_handle;
+      connection.query('select * from user where user_handle =?',[user_handle],function(err,data){
+        if(data.length > 0){
+            var value ='';
+            response.send(value);
+
+        }
+    });
+
+  }
+
     editprofileget(request, response) {
 
         // var user_handle = request.body.user_handle;

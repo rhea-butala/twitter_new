@@ -57,8 +57,9 @@ app.post('/forgot_pass/emailforgotpass',vlass.emailforgotpass);
 app.get('/resetpassword/:id/:token',vlass.resetpassword);
 app.post('/resetpassword',vlass.resetpasswordnext);
 
-
-app.post('/auth2',vlass.postauth2);
+app.post('/registration.html/auth2',vlass.postauth2);
+app.post('/registration.html/auth3',vlass.postauth3);
+//app.post('/auth2',vlass.postauth2);
 
 //app.get('/home/:name', vlass.gethome);
 app.get('/home', vlass.gethome);

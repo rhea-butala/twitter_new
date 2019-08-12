@@ -48,7 +48,7 @@
 	  position:relative;
 	  width:365px;
 	  height:100%;
-	  margin:50px auto 100px;
+	  margin:50px auto 10px;
 	  text-align:center;
 	  background:#eeeeef;
 	  padding:40px;
@@ -88,10 +88,11 @@
  
   
   .button {
-		position: relative;
-    float: left;
+		/* position: relative; */
+    float: center;
     width: 145px;
     margin-top: 10px;
+    margin-left:600px;
     background: #507492;
     color: #fff;
     font-weight: 400;
@@ -168,6 +169,11 @@ input {
   .signup a {
     text-decoration: line;
     color:white;
+  }
+
+  .reg{
+    color:#FF6666;
+    font-size:0.75em;
   }
 
   
