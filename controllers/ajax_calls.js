@@ -906,6 +906,24 @@ display();
         $(".file-upload").click();
     });
 }
+function user_session(){
+    let name = localStorage.getItem("userhandle");
+        let password =  localStorage.getItem("password");
+        let number = 0;
+        if (name == null)
+        {
+            nummber++;
+        }
+        if(number == 1)
+        {
+            window.location.href=`http://localhost:7000/`; 
+            number = number - 1;
+        }
+        else {
+            window.location.href=`http://localhost:7000/home/${name}`;
+        }
+        
+}
 function get() {
     formdata = {
         user_handle: $("#Userhandle").val(),
@@ -950,6 +968,7 @@ function get() {
                 name = data[0].Name;
                 idval = data[0].user_id;
             // ////console.log(datanew[0].Name);
+                localStorage.setItem("userhandle",data[0].user_handle);
             $('#getResponse').html(name);
             // window.location.href = `http://localhost:3000/home/${name}`;
             window.location.href = `http://localhost:7000/home/${name}`;
@@ -1403,9 +1422,13 @@ var post_data ={
 
 }
 
-function logout()
-{
-    window.location.href = `http://localhost:4000/`;
+function logout(){
+//    var url = window.location.pathname;
+//     var name = url.substring(url.lastIndexOf('/')+1);
+window.location.href = `http://localhost:7000/`;  
+localStorage.clear();
+
+    
 
 }
 
