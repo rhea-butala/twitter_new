@@ -55,7 +55,7 @@ app.get('/registration.html', vlass.getregistration);
 app.post('/ajaxcallindex',vlass.ajaxcallindex);
 
 app.post('/ajaxLogin',vlass.ajaxLogin);
-app.post('/auth', vlass.postauth);
+//app.post('/auth', vlass.postauth);
 app.post('/for_pass',vlass.for_password)
 
 app.get('/forgot_pass',vlass.forgot_pass);
@@ -74,7 +74,7 @@ app.get('/forgot_pass.html',vlass.forgot_pass)
 
 //app.post('/home/:name/tweets', vlass.tweets);
 app.post('/home/:name/tweets', vlass.tweets);
-app.post('/home/:name/editprofile', vlass.editprofile);
+app.put('/home/:name/editprofile', vlass.editprofile);
 app.get('/home/:name/editprofileget', vlass.editprofileget);
 //app.post('/home/postimage', vlass.postimage);
 app.get('/home/:name/displaytweets', vlass.displaytweets);

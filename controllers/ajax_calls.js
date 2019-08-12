@@ -984,13 +984,7 @@ function clear_disp() {
 
 
 function editprofile() {
-    ////console.log("hi");
-    //var name1="hi";
-    // var name=document.getElementById("namedisp").value;  
-    // var image = document.getElementById("profile_image").src;
-
-    // var image= vOneLS;
-    ////console.log("url is"+imageurl);
+    
     var path = "home/profile_image/";
     // ////console.log(imageurl);
     var post_data = {
@@ -1004,7 +998,7 @@ function editprofile() {
     ////console.log(post_data);
     // ////console.log(post_data);
     $.ajax({
-        type: "POST",
+        type: "put",
 
         url: window.location + "/editprofile",
         data: post_data,

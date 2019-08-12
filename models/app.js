@@ -60,20 +60,10 @@ class Twitter_user {
     
     editprofile(request, response) {
 
-        // var user_handle = request.body.user_handle;
-
         var profile_image = request.body.profile_image;
-        var user_handle = request.body.user_handle;
-        ////console.log("edit func");
-        // ////console.log(profile_image);
-        // ////console.log(user_handle);
-
-        //  ////console.log("hi");
+        var user_handle = request.params.name;
         connection.query('update user set profile_image=? where user_handle=?', [profile_image, user_handle]);
-
-
         response.send("success");
-
 
     }
     postauth2(request, response) {
@@ -511,27 +501,7 @@ class Twitter_user {
             }
         });
     }
-    // likecountPost(request, response){
-    //     var tweet_id = request.body.tweet_id;
-    //     var likeno = request.body.likeno;
-
-    //     connection.query('update tweets set likecount=? where tweet_id=? ', [likeno,tweet_id], function (err, data) {
-    //         //response.send(data);
-           
-    //     });
-
-
-    // }
-    // likecountdisplay(request, response){
-    //     //console.log("function");
-    //     var tweet_id = request.body.tweet_id;
-    //     //console.log(tweet_id);
-    //     connection.query('update tweet.tweets set likecount=(select count(*) from tweet.like_post where tweet_id = ?) where tweet_id=?   ', [tweet_id,tweet_id], function (err, data) {
-    //         response.send(data);
-           
-    //     });
-
-
+   
     // }
     globaltweets(request, response) {
         //console.log("hi global tweet");
@@ -634,7 +604,7 @@ delete_tweet(request, response){
 //console.log("delete"+ tweet_id);
 
         connection.query('delete from tweets where tweet_id=?; delete from retweet where tweet_id=?',[tweet_id,tweet_id],function(err,data){
-
+              //if(err) throw err;
             //response.send("hi"+JSON.stringify(data));
         });
         
@@ -696,12 +666,9 @@ delete_tweet(request, response){
         var post_text = request.body.post_text;
         var hashtag = request.body.hashtag;
         var media = request.body.media;
-        // var media = request.body.media;
+        
         var userhandle = request.body.userhandle;
-        //var likecount = '0';
-        ////console.log(userhandle);
-        ////console.log(post_text);
-        ////console.log("hiiiiii");
+        
 
         const tweet = {
             post_text,
@@ -709,19 +676,10 @@ delete_tweet(request, response){
 
             hashtag,
             userhandle,
-           // likecount
-
-            // user_handle 
+            
 
         }
-        ////console.log(post_text);
-        //console.log(tweet);
-
-        ////console.log(tweet);
-
-        ////console.log(tweet.post_text);
-        ////console.log(tweet.userhandle);
-
+        
 
         connection.query('Insert into tweets set ?', [tweet])
         response.send("success");
