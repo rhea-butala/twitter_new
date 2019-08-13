@@ -91,7 +91,8 @@ class Twitter_user {
             else
             {
                 bcrypt.hash(courses.password_hash, 10, function (err, hash) {
-                    if (err) //console.log(err);
+                    if (err) 
+                    	console.log(err);
                         courses.password_hash = hash;
                     connection.query(`INSERT INTO user set?`, [courses])
                     //response.sendFile(path.join(__dirname + '/../views/login.html'));
@@ -482,7 +483,7 @@ class Twitter_user {
       }
     displaytweets(request, response) {
         var userhandle = request.body.userhandle;
-        connection.query('select * from tweets t inner join user u on t.userhandle = u.user_handle where t.userhandle = ? or t.user_retweeted =? order by t.updated_at desc; ', [userhandle,userhandle], function (err, data) {
+        connection.query('select t.created_at,t.user_retweeted,t.post_text,u.profile_image,t.updated_at,t.userhandle,t.media,t.tweet_id,t.likecount from tweets t inner join user u on t.userhandle = u.user_handle where t.userhandle = ? or t.user_retweeted = ? order by t.updated_at desc;', [userhandle,userhandle], function (err, data) {
             response.send(data);
             //console.log(data[0].updated_at);
             if (err) {
