@@ -7,7 +7,7 @@ var bodyParser = require('body-parser');
 var connection= require('../models/connect.js');
 var session = require('express-session');
 var path = require('path');
-var appfunc = require('../models/app.js');
+var appfunc = require('../models/user.js');
 //var edit_profile = require('../controllers/edit_profile.js');
 
 app.use(express.json());

@@ -188,7 +188,7 @@ function displaytweets(){
             </div>
             <div class="meta">
             Reposted: @${data[index].user_retweeted} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time>
+                <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at} </time>
                
         </header>
         <header>
@@ -202,7 +202,7 @@ function displaytweets(){
                     
                         
                        Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                       <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time></div>
+                       <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at} </time></div>
                 </header>
                 `
                 if(data[index].media!=`home/profile_image/undefined` ){
@@ -211,7 +211,7 @@ console.log("media"+data[index].media);
                 html+=
                 `
         <a href="single.html" class="image featured"></a>
-                <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                <iframe src="${data[index].media}" height="400" style="width:100%" autoplay=0></iframe>
                 <p></p>
                 <footer>
                 <ul class="actions">
@@ -271,15 +271,16 @@ console.log("media"+data[index].media);
                     
                         
                        Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                       <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time></div>
+                       <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at} </time></div>
                 </header>
                
             `;
+           // console.log(data[index].updated_at);
             if(data[index].media!=`home/profile_image/undefined`  ){
 console.log("media"+data[index].media);
 
                 html+=` <a href="single.html" class="image featured"></a>
-                <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                <iframe src="${data[index].media}" height="400" style="width:100%" autoplay=0 ></iframe>
                 <p></p>
                 <footer>
                 <ul class="actions">
@@ -386,7 +387,7 @@ function displayretweets(){
                         </div>
                 </header>
                 <a href="single.html" class="image featured"></a>
-                <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                <iframe src="${data[index].media}" height="400" style="width:100%" autoplay=0></iframe>
                 <p></p>
                 <footer>
                 <ul class="actions">
@@ -571,7 +572,7 @@ function globaltweets(){
                  html+=
                  `
          <a href="single.html" class="image featured"></a>
-                 <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                 <iframe src="${data[index].media}" height="400" style="width:100%" autoplay=0></iframe>
                  <p></p>
                  <footer>
                  <ul class="actions">
@@ -638,7 +639,7 @@ function globaltweets(){
  
  
                  html+=` <a href="single.html" class="image featured"></a>
-                 <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
+                 <iframe src="${data[index].media}" height="400" style="width:100%" autoplay=0></iframe>
                  <p></p>
                  <footer>
                  <ul class="actions">
@@ -908,8 +909,12 @@ followers(name);
     display();
 }
 function user_session(){
-    let name = localStorage.getItem("userhandle");
-        let password =  localStorage.getItem("password");
+    if(localStorage.getItem("userhandle")){
+
+    name = localStorage.getItem("userhandle");
+    
+    
+        //let password =  localStorage.getItem("password");
         let number = 0;
         if (name == null)
         {
@@ -923,6 +928,7 @@ function user_session(){
         else {
             window.location.href=`http://localhost:8000/home`;
         }
+    }
         
 }
 function get() {

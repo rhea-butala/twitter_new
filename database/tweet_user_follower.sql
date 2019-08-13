@@ -32,7 +32,7 @@ CREATE TABLE `user_follower` (
   KEY `follower_id` (`follower_id`),
   CONSTRAINT `user_follower_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `user_follower_ibfk_2` FOREIGN KEY (`follower_id`) REFERENCES `user` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=34 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `user_follower` (
 
 LOCK TABLES `user_follower` WRITE;
 /*!40000 ALTER TABLE `user_follower` DISABLE KEYS */;
-INSERT INTO `user_follower` VALUES (26,19,1,'unfollow'),(27,19,27,'unfollow'),(28,19,22,'unfollow'),(29,19,1,'unfollow'),(30,19,27,'unfollow'),(31,19,22,'unfollow');
+INSERT INTO `user_follower` VALUES (27,19,27,'unfollow'),(28,19,22,'unfollow'),(30,19,27,'unfollow'),(31,19,22,'unfollow'),(38,27,19,'unfollow'),(39,1,19,'unfollow'),(40,19,1,'unfollow');
 /*!40000 ALTER TABLE `user_follower` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-08-08 16:32:27
+-- Dump completed on 2019-08-13 16:58:48
