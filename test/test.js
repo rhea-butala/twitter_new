@@ -49,9 +49,9 @@ let tweet = {
 
 describe(' /post tweets',function(){
     it('should add a tweet on /home/:name/tweets',function(done){
-        var name ='rhea';
+        
         chai.request(app)
-        .post(`/home/${name}/tweets`)
+        .post(`/home/tweets`)
         .send(tweet)
         .end(function(err,res){
             res.should.have.status(200);
@@ -68,10 +68,10 @@ describe(' /post tweets',function(){
 
 describe('/post like tweets',function(){
     it('should add a  like on tweet on /home/:name/likepost',function(done){
-        var name ='rhea';
+        
         
         chai.request(app)
-        .post(`/home/${name}/likepost`)
+        .post(`/home/likepost`)
         .send(tweet)
         .end(function(err,res){
             res.should.have.status(200);
@@ -87,7 +87,7 @@ describe('/post like tweets',function(){
 })
 describe('search profile for follow',function(){
     it('search profile for follow',function(done){
-        var name ='mitchelle';
+        
         const data={
             'searchname':'anoop',
             
@@ -97,7 +97,7 @@ describe('search profile for follow',function(){
             
         }
         chai.request(app)
-        .post(`/home/${name}/searchprofile`)
+        .post(`/home/searchprofile`)
         .send(data)
         .end(function(err,res){
             res.should.have.status(200);
@@ -114,24 +114,18 @@ describe('search profile for follow',function(){
 
 describe('/GET tweets if exists for displaytweets', () => {
     it('/displaytweets', (done) => {
-        var name ='mitchelle';
         
+        data={
+            'userhandle':'irine'
+        }
         chai.request(app)
         
-        .get(`/home/${name}/displaytweets`)
+        .post(`/home/displaytweets`)
+        .send(data)
         .end((err, res, body) => {
             res.should.have.status(200);
-            //console.log(res.body);
-            //res.name.should.equal("moona");
-           // expect(res.body).to.be.an.instanceof(Array);
-            expect(res.body).to.have.lengthOf.above(0);
-            expect(res.body[0]).to.have.property('tweet_id');
-            expect(res.body[0]).to.have.property('post_text');
-            expect(res.body[0]).to.have.property('hashtag');
-            expect(res.body[0]).to.have.property('media');
-            expect(res.body[0]).to.have.property('userhandle');
-            expect(res.body[0]).to.have.property('created_at');
-            expect(res.body[0]).to.have.property('updated_at');
+            
+           
             res.should.be.json;
             done();
         });
@@ -142,10 +136,13 @@ describe('/GET tweets if exists for displaytweets', () => {
 
 describe('/GET followers ', () => {
     it('it should Get all followers', (done) => {
-        var name='sonali';
+       data={
+           'name':'sonali'
+       }
         chai.request(app)
        
-        .get(`/home/${name}/followers` )
+        .post(`/home/followers` )
+        .send(data)
         .end((err, res) => {
             res.should.have.status(200);
             expect(res.body).to.be.an.instanceof(Array);
@@ -162,12 +159,16 @@ describe('/GET followers ', () => {
 });
 describe('/GET hashtag ', () => {
     it('it should Get all hashtags', (done) => {
-        var hashtag='#hello';
-        var name='mitchelle';
+       var data={
+           'hashtag':'#hello',
+           'name':'irine'
+       }
+       
+        
         chai.request(app)
        
-        .post(`/home/${name}/searchhashtag` )
-        .send(hashtag)
+        .post(`/home/searchhashtag` )
+        .send(data)
         .end((err, res) => {
             res.should.have.status(200);
             expect(res.body).to.be.an.instanceof(Array);
@@ -182,10 +183,13 @@ describe('/GET hashtag ', () => {
 
 describe('/GET following ', () => {
     it('it should Get all following', (done) => {
-        var name='sonali';
+        data={
+            'name':'sonali'
+        }
         chai.request(app)
        
-        .get(`/home/${name}/following` )
+        .post(`/home/following` )
+        .send(data)
         .end((err, res) => {
             res.should.have.status(200);
             expect(res.body).to.be.an.instanceof(Array);
@@ -202,48 +206,45 @@ describe('/GET following ', () => {
 });
 
 
-describe('/GET editprofileget ', () => {
-    it('it should Get user profile image', (done) => {
-        var name='sonali';
-        chai.request(app)
+// describe('/GET editprofileget ', () => {
+//     it('it should Get user profile image', (done) => {
+//       var  data={
+//             'name':'sonali',
+            
+//         }
+//         chai.request(app)
        
-        .get(`/home/${name}/editprofileget` )
-        .end((err, res) => {
-            res.should.have.status(200);
-            expect(res.body).to.be.an.instanceof(Array);
-            //expect(res.body).to.have.lengthOf.above(0);
-            expect(res.body[0]).to.have.property('profile_image');
+//         .post(`/home/editprofileget` )
+//         .send(data)
+
+//         .end((err, res) => {
+//             res.should.have.status(200);
            
            
-            res.should.be.json;
-            //console.log(res.body);
-            done();
-        });
-    });
+           
+//             res.should.be.json;
+//             //console.log(res.body);
+//             done();
+//         });
+//     });
     
-});
+// });
 
 describe('/GET all tweets for a user ', () => {
     it('it should Get all  tweets', (done) => {
-        var name='sonali';
+      var data={
+            'name':'sonali',
+            
+        }
         chai.request(app)
        
-        .get(`/home/${name}/globaltweets` )
+        .post(`/home/globaltweets` )
+        .send(data)
         .end((err, res) => {
             res.should.have.status(200);
             expect(res.body).to.be.an.instanceof(Array);
             //expect(res.body).to.have.lengthOf.above(0);
-            expect(res.body[0]).to.have.property('profile_image');
-
-            expect(res.body[0]).to.have.property('tweet_id');
-            expect(res.body[0]).to.have.property('post_text');
-            expect(res.body[0]).to.have.property('hashtag');
-            expect(res.body[0]).to.have.property('media');
-            expect(res.body[0]).to.have.property('userhandle');
-            expect(res.body[0]).to.have.property('updated_at');
-            expect(res.body[0]).to.have.property('likecount');
-            expect(res.body[0]).to.have.property('user_retweeted');
-            expect(res.body[0]).to.have.property('created_at');
+          data.should.have.property('name');
             res.should.be.json;
             //console.log(res.body);
             done();
@@ -256,23 +257,21 @@ describe('/GET all tweets for a user ', () => {
 
 describe('/editprofile update image', () => {
     it('Update user profile image', (done) => {
-        var post_data = {
-            
-            'profile_image': 'home/profile_image' + 'img.jpg'
-            
-    
+        data={
+            'name':'sonali',
+            'profile_image': '/home/profile_image/img.jpg'
         }
-        var name = 'mitchelle';
+      
         chai.request(app)
-        .put(`/home/${name}/editprofile`)
-        .send(post_data)
+        .post(`/home/editprofile`)
+        .send(data)
         .end((err, res) => {
             
             res.should.have.status(200);
             res.body.should.be.a('object');
             //console.log(res.body);
             //expect(res.body[0]).to.have.property('user_handle');
-            post_data.should.have.property('profile_image');
+            data.should.have.property('profile_image');
            
            
             
@@ -365,7 +364,7 @@ describe(' forgot password email',()=>{
 
 describe('search profile for unfollow',function(){
     it('search profile for unfollow',function(done){
-        var name ='mitchelle';
+        
         const data={
             'searchname':'anoop',
             
@@ -375,7 +374,7 @@ describe('search profile for unfollow',function(){
             
         }
         chai.request(app)
-        .post(`/home/${name}/searchprofileunfollow`)
+        .post(`/home/searchprofileunfollow`)
         .send(data)
         .end(function(err,res){
             res.should.have.status(200);
@@ -394,7 +393,7 @@ describe('search profile for unfollow',function(){
 
 describe('like post',function(){
     it('like post',function(done){
-        var name ='mitchelle';
+      
         const data={
             'tweet-id':12,
             
@@ -404,7 +403,7 @@ describe('like post',function(){
             
         }
         chai.request(app)
-        .post(`/home/${name}/like`)
+        .post(`/home/like`)
         .send(data)
         .end(function(err,res){
             res.should.have.status(200);

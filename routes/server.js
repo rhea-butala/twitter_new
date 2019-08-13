@@ -16,29 +16,29 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true
 }));
-app.use('/home/:name/assets', express.static(__dirname + '/../views/assets'));
-app.use('/home/:name/images', express.static(__dirname + '/../views/images'));
-app.use('/:name/views/assets', express.static(__dirname + '/../views/assets'));
+app.use('/home/assets', express.static(__dirname + '/../views/assets'));
+app.use('/home/images', express.static(__dirname + '/../views/images'));
+app.use('/views/assets', express.static(__dirname + '/../views/assets'));
 //app.use('/home/profile_image', express.static(__dirname + '/../views/js'));
 app.use('/views/assets', express.static(__dirname + '/../views/assets'));
 app.use('/js', express.static(__dirname + '/../views/js'));
 app.use('/controllers', express.static(__dirname + '/../controllers'));
 
-app.use('/:name/assets', express.static(__dirname + '/../views/assets'));
-app.use('/:name/js', express.static(__dirname + '/../views/js'));
-app.use('/home/:name', express.static(__dirname + '/../views/index.html'));
+app.use('/assets', express.static(__dirname + '/../views/assets'));
+app.use('/js', express.static(__dirname + '/../views/js'));
+app.use('/home', express.static(__dirname + '/../views/index.html'));
 //app.use('/home/:name', express.static(__dirname + '/../views/index.html'));
-app.use('/home/:name/profile_image', express.static(__dirname + '/../views/profile_image'));
-app.use('/home/:name/tweet_image', express.static(__dirname + '/../views/tweet_image'));
+app.use('/home/profile_image', express.static(__dirname + '/../views/profile_image'));
+app.use('/home/tweet_image', express.static(__dirname + '/../views/tweet_image'));
 //app.use('/home/profile_image', express.static(__dirname + '/../views/js'));
 app.use('/images', express.static(__dirname + '/../views/images'));
 
-app.use('/:name/images', express.static(__dirname + '/../views/images'));
+app.use('/images', express.static(__dirname + '/../views/images'));
 // app.use('/ajaxcall', express.static(__dirname + '/views/login.html'));
 app.use('/assets', express.static(__dirname + '/../views/assets'));
 app.use('/css', express.static(__dirname + '/../views/css'));
 
-app.use('/:name/css', express.static(__dirname + '/../views/css'));
+app.use('/css', express.static(__dirname + '/../views/css'));
 app.use(bodyParser.urlencoded({extended : true}));
 app.use(bodyParser.json());
 "use strict"
@@ -68,43 +68,43 @@ app.post('/registration.html/auth3',vlass.postauth3);
 app.post('/auth2',vlass.postauth2);
 
 //app.get('/home/:name', vlass.gethome);
-app.get('/home/:name', vlass.gethome);
+app.get('/home', vlass.gethome);
 
 app.get('/forgot_pass.html',vlass.forgot_pass)
 
 //app.post('/home/:name/tweets', vlass.tweets);
-app.post('/home/:name/tweets', vlass.tweets);
-app.put('/home/:name/editprofile', vlass.editprofile);
-app.get('/home/:name/editprofileget', vlass.editprofileget);
+app.post('/home/tweets', vlass.tweets);
+app.post('/home/editprofile', vlass.editprofile);
+app.post('/home/editprofileget', vlass.editprofileget);
 //app.post('/home/postimage', vlass.postimage);
-app.get('/home/:name/displaytweets', vlass.displaytweets);
-app.post('/home/:name/displayretweets', vlass.displayretweets);
-app.get('/home/:name/following', vlass.following);
-app.get('/home/:name/followers', vlass.followers);
+app.post('/home/displaytweets', vlass.displaytweets);
+app.post('/home/displayretweets', vlass.displayretweets);
+app.post('/home/following', vlass.following);
+app.post('/home/followers', vlass.followers);
 
-app.get('/home/:name/globaltweets', vlass.globaltweets);
+app.post('/home/globaltweets', vlass.globaltweets);
 
 
-app.post('/home/:name/retweet', vlass.retweet);
-app.post('/home/:name/retweetpost', vlass.retweetpost);
+app.post('/home/retweet', vlass.retweet);
+app.post('/home/retweetpost', vlass.retweetpost);
 
-app.post('/home/:name/searchprofileunfollow', vlass.search_profileunfollow);
-app.post('/home/:name/searchprofile', vlass.search_profile);
+app.post('/home/searchprofileunfollow', vlass.search_profileunfollow);
+app.post('/home/searchprofile', vlass.search_profile);
 
-app.post('/home/:name/searchhashtag', vlass.search_hashtag);
+app.post('/home/searchhashtag', vlass.search_hashtag);
 
-app.post('/home/:name/follow', vlass.follow);
-app.delete('/home/:name/unfollow', vlass.unfollow);
+app.post('/home/follow', vlass.follow);
+app.post('/home/unfollow', vlass.unfollow);
 
-app.get('/home/:name/followercount', vlass.followercount);
+app.post('/home/followercount', vlass.followercount);
 
-app.post('/home/:name/like', vlass.like);
-app.post('/home/:name/likepost', vlass.likepost);
-app.delete('/home/:name/delete_tweet', vlass.delete_tweet);
+app.post('/home/like', vlass.like);
+app.post('/home/likepost', vlass.likepost);
+app.post('/home/delete_tweet', vlass.delete_tweet);
 
 //app.post('/home/likecountdisplay', vlass.likecountdisplay);
 //app.post('/home/likecountPost', vlass.likecountPost);
 
-const port = process.env.PORT || 7000;
+const port = process.env.PORT || 8000;
 app.listen(port,()=>console.log(`listening on port ${port}`));
 module.exports = app;

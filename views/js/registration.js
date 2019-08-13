@@ -44,6 +44,10 @@
             document.getElementById("userhandlecheck").innerHTML = "Please enter userhandle";
 			flag++;
 		}
+		else{
+            document.getElementById("userhandlecheck").innerHTML = "";
+
+		}
 
 		if(email == ""){
 			flag++;
@@ -142,7 +146,7 @@ function clear_data(){
 		var password = $('#userPass').val("");
 		var password_hash =$('#userConfirmPass').val("");
 
-   window.location.href=`http://localhost:4000/`;
+   window.location.href=`http://localhost:8000/`;
 
 
 }

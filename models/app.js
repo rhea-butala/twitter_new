@@ -46,7 +46,7 @@ class Twitter_user {
         }
     }
     followercount(request, response){
-        var user_handle = request.params.name;
+        var user_handle = request.body.name;
         //console.log("it si "+request.body.name);
 
         connection.query('SELECT count(*) FROM user_follower WHERE user_handle = ? ', [user_handle], function (error, results, fields) {
@@ -61,7 +61,7 @@ class Twitter_user {
     editprofile(request, response) {
 
         var profile_image = request.body.profile_image;
-        var user_handle = request.params.name;
+        var user_handle = request.body.user_handle;
         connection.query('update user set profile_image=? where user_handle=?', [profile_image, user_handle]);
         response.send("success");
 
@@ -147,7 +147,7 @@ class Twitter_user {
     editprofileget(request, response) {
 
         // var user_handle = request.body.user_handle;
-        var user_handle = request.params.name;
+        var user_handle = request.body.user_handle;
         var img;
         // ////console.log("edit func");
         // ////console.log(profile_image);
@@ -169,7 +169,7 @@ class Twitter_user {
 
     }
     gethome(request, response) {
-        var name = request.params.name;
+        var name = request.body.name;
         if (request.session.loggedin) {
             response.send('Welcome back, ' + request.session.name + '!');
             // response.sendFile(path.join(__dirname + '/home'));
@@ -227,7 +227,7 @@ class Twitter_user {
                     to: email,         // List of recipients
                     subject: 'reset Password', // Subject line
                     text: 'Have the most fun you can in a car. Get your Tesla today!', 
-                    html:'<a href="http://localhost:7000/resetpassword/' + payload.id + '/' + token + '">Reset password</a>'// Plain text body
+                    html:'<a href="http://localhost:8000/resetpassword/' + payload.id + '/' + token + '">Reset password</a>'// Plain text body
                 };
 
 
@@ -437,7 +437,7 @@ class Twitter_user {
                 // connection.query('select * from retweet where tweet_id=? and user_id = (select user_id from user where user_handle =?)',[tweet_id,user_handle],function(err,data){
                    // response.send(data);
         
-                  connection.query(`insert into retweet (tweet_id,user_id) values (? ,(select user_id from user where user_handle = ?)); INSERT INTO tweets (post_text, hashtag, media, userhandle, user_retweeted) SELECT post_text, hashtag, media, userhandle, '${user_handle}' FROM tweets WHERE tweet_id=?;`,[tweet_id,user_handle,tweet_id],function(err,data){
+                  connection.query(`insert into retweet (tweet_id,user_id) values (? ,(select user_id from user where user_handle = ?)); INSERT INTO tweets (post_text, hashtag, media, userhandle, user_retweeted, retweetid) SELECT post_text, hashtag, media, userhandle, '${user_handle}', tweet_id FROM tweets WHERE tweet_id=?;`,[tweet_id,user_handle,tweet_id],function(err,data){
                       if(err)
                       {throw err;}
                       else
@@ -481,7 +481,7 @@ class Twitter_user {
           });
       }
     displaytweets(request, response) {
-        var userhandle = request.params.name;
+        var userhandle = request.body.userhandle;
         connection.query('select * from tweets t inner join user u on t.userhandle = u.user_handle where t.userhandle = ? or t.user_retweeted =? order by t.updated_at desc; ', [userhandle,userhandle], function (err, data) {
             response.send(data);
             //console.log(data[0].updated_at);
@@ -505,7 +505,7 @@ class Twitter_user {
     // }
     globaltweets(request, response) {
         //console.log("hi global tweet");
-        var userhandle = request.params.name;
+        var userhandle = request.body.userhandle;
         //console.log("userhandle"+userhandle);
         connection.query(' select u.profile_image, t.tweet_id,t.post_text,t.hashtag,t.media,t.userhandle,t.updated_at,t.likecount,t.created_at,t.user_retweeted from user_follower uf inner join user u on uf.follower_id = u.user_id inner join tweets t on t.userhandle = u.user_handle  where uf.user_id=(select user_id from user where user_handle=?) group by t.tweet_id order by t.updated_at desc;', [userhandle], function (err, data) {
             response.send(data);
@@ -534,7 +534,7 @@ class Twitter_user {
         });
     }
     following(request, response){
-    var name = request.params.name;
+    var name = request.body.name;
 
     connection.query('select * from user_follower where user_id=(select user_id from user where user_handle =?)',[name],function(err,data){
 
@@ -544,7 +544,7 @@ class Twitter_user {
     });
     }
     followers(request, response){
-        var name = request.params.name;
+        var name = request.body.name;
     
         connection.query('select * from user_follower where follower_id=(select user_id from user where user_handle =?)',[name],function(err,data){
     
@@ -603,7 +603,7 @@ delete_tweet(request, response){
         var tweet_id = request.body.tweet_id;
 //console.log("delete"+ tweet_id);
 
-        connection.query('delete from tweets where tweet_id=?; delete from retweet where tweet_id=?',[tweet_id,tweet_id],function(err,data){
+        connection.query('delete from tweets where tweet_id=? or retweetid=?; delete from retweet where tweet_id=?',[tweet_id,tweet_id,tweet_id],function(err,data){
               //if(err) throw err;
             //response.send("hi"+JSON.stringify(data));
         });

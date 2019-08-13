@@ -10,7 +10,7 @@ $(window).scroll(function() {
     if($(window).scrollTop() > 0) {
        
     } else {
-        globaltweets();
+       // globaltweets();
     }
 });
 // window.addEventListener('scroll', function() {
@@ -50,10 +50,8 @@ function imagechange() {
 function display() {
     //console.log(following_no +" "+ followers_no);
     ////console.log(following+"following outside");
-    var url = window.location.pathname;
-    var name_disp = url.substring(url.lastIndexOf('/')+1);
-    console.log(name_disp);
-    document.getElementById("namedisp").innerHTML = `@${name_disp}`;
+   
+    document.getElementById("namedisp").innerHTML = `@${name}`;
    
    var senddata={
        name:name
@@ -62,7 +60,7 @@ function display() {
   //  //console.log(senddata);
     
     $.ajax({
-        type: "get",
+        type: "post",
 
         url: window.location + "/followercount",
         data: senddata,
@@ -128,7 +126,7 @@ function reset_password()
     $.ajax({
         type: "POST",
 
-        url: "http://localhost:7000" + "/resetpassword",
+        url: "http://localhost:8000" + "/resetpassword",
         data: reset_data,
         datatype: 'json'
 
@@ -151,7 +149,7 @@ function displaytweets(){
         userhandle:name
     }
     $.ajax({
-        type:"get",
+        type:"post",
         url:window.location +"/displaytweets",
         data : post_data,
         
@@ -190,7 +188,7 @@ function displaytweets(){
             </div>
             <div class="meta">
             Reposted: @${data[index].user_retweeted} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time>
+                <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time>
                
         </header>
         <header>
@@ -204,10 +202,12 @@ function displaytweets(){
                     
                         
                        Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                       <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
+                       <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time></div>
                 </header>
                 `
-                if(data[index].media!='home/profile_image/undefined'){
+                if(data[index].media!=`home/profile_image/undefined` ){
+console.log("media"+data[index].media);
+
                 html+=
                 `
         <a href="single.html" class="image featured"></a>
@@ -271,12 +271,12 @@ function displaytweets(){
                     
                         
                        Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                       <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
+                       <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time></div>
                 </header>
                
             `;
-            if(data[index].media!='home/profile_image/undefined'){
-
+            if(data[index].media!=`home/profile_image/undefined`  ){
+console.log("media"+data[index].media);
 
                 html+=` <a href="single.html" class="image featured"></a>
                 <iframe src="${data[index].media}" height="400" style="width:100%"></iframe>
@@ -381,7 +381,7 @@ function displayretweets(){
                    <p></p>
                     </div>
                     <div class="meta">
-                        <time class="published" datetime="2015-11-01">${tweet_time}</time>
+                        <time class="published" datetime="2015-11-01">${data[index].updated_at}</time>
                         <a href="#" class="author"><span class="name">${data[index].userhandle}</span><img class="Profile_post_img" src="images/avatar.jpg" alt="" /></a>
                         </div>
                 </header>
@@ -428,7 +428,7 @@ function delete_tweet(tweet_id){
     }
     //console.log(formdata);
     $.ajax({
-        type: "delete",
+        type: "post",
 
         url: window.location + "/delete_tweet",
         data: formdata,
@@ -516,7 +516,7 @@ function globaltweets(){
         userhandle:name
     }
     $.ajax({
-        type:"get",
+        type:"post",
         url:window.location +"/globaltweets",
         data : post_data,
         
@@ -550,7 +550,7 @@ function globaltweets(){
              </div>
              <div class="meta">
              Reposted: @${data[index].user_retweeted} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                 <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time>
+                 <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time>
                 
          </header>
          <header>
@@ -564,7 +564,7 @@ function globaltweets(){
                      
                          
                         Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                        <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
+                        <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time></div>
                  </header>
                  `
                  if(data[index].media!='home/profile_image/undefined'){
@@ -583,7 +583,7 @@ function globaltweets(){
                          <li><a href="#"></a></li>
                          <li><div id="error"></div></li>
                          </ul>
-                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="globaltweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
                         &nbsp;&nbsp;&nbsp;
                         <div id="likeno" class="countno">${data[index].likecount}</div>
                         <div id="error"></div>
@@ -607,7 +607,7 @@ function globaltweets(){
                          <li><a href="#"></a></li>
                          <li><div id="error"></div></li>
                          </ul>
-                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="globaltweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
                         &nbsp;&nbsp;&nbsp;
                         <div id="likeno" class="countno">${data[index].likecount}</div>
                         <div id="error"></div>
@@ -630,7 +630,7 @@ function globaltweets(){
                      
                          
                         Posted By: @${data[index].userhandle} <img class="Profile_post_img" src="${data[index].profile_image}" alt="" />
-                        <time class="published" datetime="2015-11-01">Time: ${tweet_time}</time></div>
+                        <time class="published" datetime="2015-11-01">Time: ${data[index].updated_at}</time></div>
                  </header>
                 
              `;
@@ -650,7 +650,7 @@ function globaltweets(){
                          <li><a href="#"></a></li>
                          <li><div id="error"></div></li>
                          </ul>
-                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="globaltweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
                         &nbsp;&nbsp;&nbsp;
                         <div id="likeno" class="countno">${data[index].likecount}</div>
                         <div id="error"></div>
@@ -674,7 +674,7 @@ function globaltweets(){
                          <li><a href="#"></a></li>
                          <li><div id="error"></div></li>
                          </ul>
-                        <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
+                        <div class="icon solid fa-heart" style="color:red" onmouseleave="globaltweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
                         &nbsp;&nbsp;&nbsp;
                         <div id="likeno" class="countno">${data[index].likecount}</div>
                         <div id="error"></div>
@@ -781,7 +781,7 @@ function following(name){
    }
    //console.log("name is"+name);
     $.ajax({
-        type: "get",
+        type: "post",
 
         url: window.location + "/following",
         data: post_data,
@@ -810,7 +810,7 @@ function followers(name){
     }
     //console.log("name is in followers"+name);
      $.ajax({
-         type: "get",
+         type: "post",
  
          url: window.location + "/followers",
          data: post_data,
@@ -835,7 +835,7 @@ function followers(name){
 function mainfunc() {
 following(name);
 followers(name);
-display();
+
 
     var post_data = {
         user_handle: name
@@ -844,7 +844,7 @@ display();
     }
 
     $.ajax({
-        type: "get",
+        type: "post",
 
         url: window.location + "/editprofileget",
         data: post_data,
@@ -853,7 +853,7 @@ display();
     })
         .done(function (data) {
             imageonload = data[0].profile_image;
-
+//alert(imageonload):
             //console.log(imageonload);
             var image = document.getElementById('profile_image');
             if(imageonload){
@@ -905,6 +905,7 @@ display();
     $(".upload-button").on('click', function () {
         $(".file-upload").click();
     });
+    display();
 }
 function user_session(){
     let name = localStorage.getItem("userhandle");
@@ -916,11 +917,11 @@ function user_session(){
         }
         if(number == 1)
         {
-            window.location.href=`http://localhost:7000/`; 
+            window.location.href=`http://localhost:8000/`; 
             number = number - 1;
         }
         else {
-            window.location.href=`http://localhost:7000/home/${name}`;
+            window.location.href=`http://localhost:8000/home`;
         }
         
 }
@@ -968,10 +969,10 @@ function get() {
                 name = data[0].Name;
                 idval = data[0].user_id;
             // ////console.log(datanew[0].Name);
-                localStorage.setItem("userhandle",data[0].user_handle);
+               localStorage.setItem("userhandle",data[0].user_handle);
             $('#getResponse').html(name);
             // window.location.href = `http://localhost:3000/home/${name}`;
-            window.location.href = `http://localhost:7000/home/${name}`;
+            window.location.href = `http://localhost:8000/home`;
 
 
             }
@@ -987,10 +988,7 @@ var vOneLS = localStorage.getItem("vOneLocalStorage ");
 
 
 
-function editprofileget() {
 
-
-}
 
 function clear_disp() {
     $('#searchname').val("");
@@ -1017,7 +1015,7 @@ function editprofile() {
     ////console.log(post_data);
     // ////console.log(post_data);
     $.ajax({
-        type: "put",
+        type: "post",
 
         url: window.location + "/editprofile",
         data: post_data,
@@ -1286,7 +1284,7 @@ function unfollow(index){
     }
     //console.log(index);
     $.ajax({
-        type: "delete",
+        type: "post",
 
         url: window.location + "/unfollow",
         data: index1,
@@ -1425,7 +1423,7 @@ var post_data ={
 function logout(){
 //    var url = window.location.pathname;
 //     var name = url.substring(url.lastIndexOf('/')+1);
-window.location.href = `http://localhost:7000/`;  
+window.location.href = `http://localhost:8000/`;  
 localStorage.clear();
 
     
