@@ -315,7 +315,7 @@ console.log("media"+data[index].media);
                     <ul class="stats">
                         <li><a href="#"></a></li>
                         <li><div id="error"></div></li>
-                        <li><div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
+                        
                         
                         </ul>
                         <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
@@ -398,7 +398,7 @@ function displayretweets(){
                     <ul class="stats">
                         <li><a href="#"></a></li>
                         <li><div id="error"></div></li>
-                        <li><div class="icon solid fa-heart" style="color:red" onmouseleave="globaltweets()" onclick="glow(${data[index].tweet_id})" ></div></div></li>
+                       
                         
                         </ul>
                         <div class="icon solid fa-heart" style="color:red" onmouseleave="displaytweets()" onclick="glow(${data[index].tweet_id})" ></div></div>
